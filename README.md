@@ -41,6 +41,15 @@ a, b = read(float, float)
 print(a+b)
 ```
 
+Of course, you can also just import the package:
+
+```python
+import jutge
+
+a, b = jutge.read(float, float)
+print(a+b)
+```
+
 # Warning
 
 When using `read` interactively, you need to end the input with <kbd>control</kbd> + <kbd>d</kbd> on Linux and Mac
