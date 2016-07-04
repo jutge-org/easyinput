@@ -1,6 +1,6 @@
 # Package jutge
 
-Simple functions to read input from Python for problems in Jutge.org.
+This tiny package offers a simple function to read input from Python for problems in Jutge.org.
 
 # Installation
 
