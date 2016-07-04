@@ -1,4 +1,8 @@
+# Package jutge
+
 Simple functions to read input from Python for problems in Jutge.org.
+
+# Description
 
 This package exports a `read` function that returns the next token of the
 input. The type of the token must be given as a parameter: `read(int)`,
@@ -31,3 +35,8 @@ from jutge import read
 a, b = read(float, float)
 print(a+b)
 ```
+
+# Warning
+
+When using `read` interactively, you need to end the input with <kbd>control</kbd> + <kbd>d</kbd> on Linux and Mac
+or <kbd>control</kbd> + <kbd>z</kbd> on Windows.
