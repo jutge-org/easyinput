@@ -2,12 +2,17 @@
 
 Simple functions to read input from Python for problems in Jutge.org.
 
+# Installation
+
+Simply install with `pip3 install jutge` (Python3) or `pip install jutge` (Python).
+
 # Description
 
 This package exports a `read` function that returns the next token of the
 input. The type of the token must be given as a parameter: `read(int)`,
 `read(float)`, `read(str)`... In the event no more tokens are available,
-`read` returns `None`.
+`read` returns `None`. Tokens separate input by words, so that `read(str)`
+returns the next word.
 
 Sample program to compute the sum of a sequence of integers:
 
