@@ -10,8 +10,16 @@ def tokenizer():
 
 tokens = tokenizer()
 
-def read (typ = str):
-    token = next(tokens)
-    if token is None: return None
-    return typ(token)
+def read (*types):
+    if len(types) == 0:
+        token = next(tokens)
+        if token is None: return None
+        return token
+    else:
+        result = []
+        for typ in types:
+            token = next(tokens)
+            if token is None: result.append(None)
+            else: result.append(typ(token))
+        return result
 

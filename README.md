@@ -17,3 +17,17 @@ while x is not None:
     x = read(int)
 print(s)
 ```
+
+Function `read` also admits a variable number of parameters. If no parameter
+is given, it defaults to `str`. If more than one parameter is given, it returns
+a list with as many tokens as requested, each of the corresponding type, filling
+with None values if input is exhausted.
+
+Sample program to compute the sum of two floats:
+
+```python
+from jutge import read
+
+a, b = read(float, float)
+print(a+b)
+```
