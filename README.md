@@ -4,7 +4,8 @@ This tiny package offers a simple function to read input from Python for problem
 
 # Installation
 
-Simply install with `pip3 install jutge` (Python3) or `pip install jutge` (Python).
+Simply install with `pip3 install jutge` (Python3) or `pip install jutge` (Python). It can
+be removed with `pip(3) uninstall jutge`.
 
 # Description
 
