@@ -15,6 +15,10 @@ def read (*types):
         token = next(tokens)
         if token is None: return None
         return token
+    elif len(types) == 1:
+        token = next(tokens)
+        if token is None: return None
+        return types[0](token)
     else:
         result = []
         for typ in types:
