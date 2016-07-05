@@ -1,16 +1,22 @@
 
-import sys
-
-def tokenizer():
-    for line in sys.stdin.readlines():
+def tokenizer (f):
+    for line in f.readlines():
         for word in line.split():
             yield word
     while True:
         yield None
 
-tokens = tokenizer()
+files = {}
 
-def read (*types):
+def read (*types, **kwargs):
+    import sys
+
+    if 'file' in kwargs: f = kwargs['file']
+    else: f = sys.stdin
+
+    if f not in files: files[f] = tokenizer(f)
+    tokens = files[f]
+
     if len(types) == 0:
         token = next(tokens)
         if token is None: return None

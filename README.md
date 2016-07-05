@@ -28,6 +28,8 @@ while x is not None:
 print(s)
 ```
 
+## Multiple tokens
+
 Function `read` also admits a variable number of parameters. If no parameter
 is given, it defaults to `str`. If more than one parameter is given, it returns
 a list with as many tokens as requested, each of the corresponding type, filling
@@ -49,6 +51,22 @@ import jutge
 
 a, b = jutge.read(float, float)
 print(a+b)
+```
+
+## Usage of a file descriptor
+
+Additionally, the `read` function accepts a `file` keyword argument that specifies the file descriptor to read from. By default, `file` stands for `sys.stdin`.
+
+Sample program to read each number from an open file:
+
+````
+from jutge import read
+
+with open('file.txt') as f:
+    x = read(int, file=f)
+    while w is not None:
+        print(x)
+        x = read(int, file=f)
 ```
 
 # Warning
