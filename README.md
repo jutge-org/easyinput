@@ -59,7 +59,7 @@ Additionally, the `read` function accepts a `file` keyword argument that specifi
 
 Sample program to read each number from an open file:
 
-````
+````python
 from jutge import read
 
 with open('file.txt') as f:
