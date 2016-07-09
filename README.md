@@ -1,7 +1,7 @@
 # Package jutge
 
 This tiny package offers a simple function to read input from Python for problems in Jutge.org.
-It was built in order to offer beginners an easy interface to read data in Jutge.org problems.
+It was built in order to offer beginners an easy interface to read data in [Jutge.org](https://www.jutge.org) problems.
 
 # Installation
 
