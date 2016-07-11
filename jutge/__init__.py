@@ -1,35 +1,57 @@
+# iterator class
+class JutgeTokenizer:
 
-def tokenizer (f):
-    for line in f.readlines():
-        for word in line.split():
-            yield word
-    while True:
-        yield None
+    def __init__(self, stream):
+        self.stream = stream
+        self.typ = str
+        self.words = iter('')
+        self.word = None
 
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        # get next word if need be
+        if self.word is None:
+            self.word = next(self.words, None)
+            if self.word is None:
+                line = next(self.stream, '')
+                self.words = iter(line.split())
+                self.word = next(self.words, None)
+
+        # return nothing if there's no input
+        if self.word is None: return None
+
+        # otherwise return whatever
+        if self.typ == chr: 
+            value, self.word = self.word[0], self.word[1:]
+            if self.word == '': self.word = None
+            return value
+        else:
+            value = self.typ(self.word)
+            self.word = None
+            return value
+
+    # call this function to get next token as the specified type
+    def nexttoken(self, typ = str):
+        self.typ = typ
+        return next(self)
+
+
+# read method
 files = {}
-
-def read (*types, **kwargs):
+def read(*types, **kwargs):
     import sys
 
     if 'file' in kwargs: f = kwargs['file']
     else: f = sys.stdin
 
-    if f not in files: files[f] = tokenizer(f)
+    if f not in files: files[f] = JutgeTokenizer(f)
     tokens = files[f]
 
     if len(types) == 0:
-        token = next(tokens)
-        if token is None: return None
-        return token
+        return tokens.nexttoken()
     elif len(types) == 1:
-        token = next(tokens)
-        if token is None: return None
-        return types[0](token)
+        return tokens.nexttoken(types[0])
     else:
-        result = []
-        for typ in types:
-            token = next(tokens)
-            if token is None: result.append(None)
-            else: result.append(typ(token))
-        return result
-
+        return [tokens.nexttoken(typ) for typ in types]
