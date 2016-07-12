@@ -58,3 +58,8 @@ def read(*types, **kwargs):
         return tokens.nexttoken(types[0])
     else:
         return [tokens.nexttoken(typ) for typ in types]
+
+
+
+a = read(int)
+print(a)
