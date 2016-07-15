@@ -1,20 +1,24 @@
 # Package jutge
 
-This tiny package offers a simple function to read input from Python for problems in Jutge.org.
-It was built in order to offer beginners an easy interface to read data in [Jutge.org](https://www.jutge.org) problems.
+This tiny package offers a simple function to read input from 
+Python for problems in Jutge.org. It was built in order to offer 
+beginners an easy interface to read data in 
+[Jutge.org](https://www.jutge.org) problems.
+
 
 # Installation
 
 Simply install with `pip3 install jutge` (Python3) or `pip install jutge` (Python). It can
 be removed with `pip(3) uninstall jutge`.
 
+
 # Description
 
 This package exports a `read` function that returns the next token of the
 input. The type of the token must be given as a parameter: `read(int)`,
-`read(float)`, `read(str)`... In the event no more tokens are available,
-`read` returns `None`. Tokens separate input by words, so that `read(str)`
-returns the next word.
+`read(float)`, `read(str)`, `read(chr)`... In the event no more tokens are available,
+`read` returns `None`. Except for characters, tokens are separated by words, so that `read(str)`
+returns the next word. Whitespace characters cannot be obtained.
 
 Sample program to compute the sum of a sequence of integers:
 
@@ -29,23 +33,6 @@ while x is not None:
 print(s)
 ```
 
-## Supported types
-
-Basic built-in types: integer (`int`), floating point (`float`), character (`chr`), string (`str`).
-
-Any type whose constructor accepts a `string` is supported; for example `read(iter)` will yield a string iterator.
-
-```python
-from jutge import read
-
-class mytype:
-  def __init__(self, word): self.word = word
-  def sayAWord(self): print(self.word)
-
-a = read(mytype)  # a = mytype(inputstring)
-print('Type name: ' + type(a).__name__)
-a.sayAWord()
-```
 
 ## Multiple tokens
 
@@ -87,6 +74,34 @@ with open('file.txt') as f:
         print(x)
         x = read(int, file=f)
 ```
+
+
+## Basic types
+
+The `read`function supports the following basic built-in types: 
+
+- integer (`int`), 
+- floating point (`float`),
+- character (`chr`),
+- string (`str`).
+
+
+## User defined types
+
+Any type whose constructor accepts a `string` is also supported; for example `read(iter)` will yield a string iterator:
+
+```python
+from jutge import read
+
+class mytype:
+  def __init__(self, word): self.word = word
+  def sayAWord(self): print(self.word)
+
+a = read(mytype)  # a = mytype(inputstring)
+print('Type name: ' + type(a).__name__)
+a.sayAWord()
+```
+
 
 # Warning
 
