@@ -29,6 +29,24 @@ while x is not None:
 print(s)
 ```
 
+## Supported types
+
+Basic built-in types: integer (`int`), floating point (`float`), character (`chr`), string (`str`).
+
+Any type whose constructor accepts a `string` is supported; for example `read(iter)` will yield a string iterator.
+
+```python
+from jutge import read
+
+class mytype:
+  def __init__(self, word): self.word = word
+  def sayAWord(self): print(self.word)
+
+a = read(mytype)  # a = mytype(inputstring)
+print('Type name: ' + type(a).__name__)
+a.sayAWord()
+```
+
 ## Multiple tokens
 
 Function `read` also admits a variable number of parameters. If no parameter
@@ -60,7 +78,7 @@ Additionally, the `read` function accepts a `file` keyword argument that specifi
 
 Sample program to read each number from an open file:
 
-````python
+```python
 from jutge import read
 
 with open('file.txt') as f:
