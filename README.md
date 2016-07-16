@@ -1,4 +1,4 @@
-# The `jutge` package
+# The `jutge` package [![Build Status](https://travis-ci.org/jutge-org/jutge-python.svg?branch=master)](https://travis-ci.org/jutge-org/jutge-python)
 
 ![Logo](logo.png)
 
