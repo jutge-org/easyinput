@@ -1,8 +1,10 @@
-# Package jutge
+# The `jutge` package
 
-This tiny package offers a simple function to read input from 
-Python for problems in Jutge.org. It was built in order to offer 
-beginners an easy interface to read data in 
+![Logo](logo.png)
+
+This tiny package offers a simple function to read input from
+Python for problems in Jutge.org. It was built in order to offer
+beginners an easy interface to read data in
 [Jutge.org](https://www.jutge.org) problems.
 
 
@@ -78,9 +80,9 @@ with open('file.txt') as f:
 
 ## Basic types
 
-The `read`function supports the following basic built-in types: 
+The `read`function supports the following basic built-in types:
 
-- integer (`int`), 
+- integer (`int`),
 - floating point (`float`),
 - character (`chr`),
 - string (`str`).
