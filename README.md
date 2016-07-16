@@ -10,9 +10,14 @@ beginners an easy interface to read data in
 
 # Installation
 
-Simply install with `pip3 install jutge` (Python3) or `pip install jutge` (Python).
-Upgrade to lattest version with `pip(3) install jutge --upgrade`.
-Remove with `pip(3) uninstall jutge`.
+- Python3:
+    - Install with `pip3 install jutge`.
+    - Upgrade to lattest version with `pip3 install jutge --upgrade`.
+    - Uninstall with `pip3 uninstall jutge`.
+- Python:
+    - Install with `pip install jutge`.
+    - Upgrade to lattest version with `pip install jutge --upgrade`.
+    - Uninstall with `pip uninstall jutge`.
 
 
 # Description
@@ -73,7 +78,7 @@ from jutge import read
 
 with open('file.txt') as f:
     x = read(int, file=f)
-    while w is not None:
+    while x is not None:
         print(x)
         x = read(int, file=f)
 ```
