@@ -1,13 +1,13 @@
 from jutge import read
 
-# int 
+# int
 print('enter an int:')
 a = read(int)
 print('Type name: ' + type(a).__name__)
 print('Value: ', end ='')
 print(a)
 
-# float 
+# float
 print('enter a float:')
 a = read(float)
 print('Type name: ' + type(a).__name__)

@@ -1,6 +1,6 @@
 from jutge import read
 
-f = open('/etc/passwd')
+f = open('lorem-ipsum.txt')
 w = read(file=f)
 while w is not None:
     print(w)

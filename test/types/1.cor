@@ -1,0 +1,23 @@
+enter an int:
+Type name: int
+Value: 123
+enter a float:
+Type name: float
+Value: 123.456
+enter a character:
+Type name: str
+Value: a
+enter three characters:
+a b c
+enter a string:
+Type name: str
+Value: hola
+enter another string:
+Type name: str
+Value: adeu
+enter a string (read as string iterator):
+Type name: str_iterator
+l l e t r e s 
+enter a string (read as mytype):
+Type name: mytype
+paraula
