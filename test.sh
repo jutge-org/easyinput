@@ -14,7 +14,7 @@ for d in *.tst ; do
 
         t=`basename $t .inp`
         python test.py <$t.inp >$t.out
-        diff $t.out $t.cor
+        diff $t.out $t.cor || exit 1
 
     done
 
