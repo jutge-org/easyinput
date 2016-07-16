@@ -10,8 +10,9 @@ beginners an easy interface to read data in
 
 # Installation
 
-Simply install with `pip3 install jutge` (Python3) or `pip install jutge` (Python). It can
-be removed with `pip(3) uninstall jutge`.
+Simply install with `pip3 install jutge` (Python3) or `pip install jutge` (Python).
+Upgrade to lattest version with `pip(3) install jutge --upgrade`.
+Remove with `pip(3) uninstall jutge`.
 
 
 # Description
