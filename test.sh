@@ -4,7 +4,7 @@
 fail=0
 
 cd test
-for d in *.tst
+for d in *
 do
     cd $d
     cp -r ../../jutge .
