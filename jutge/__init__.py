@@ -10,14 +10,29 @@ class JutgeTokenizer:
     def __iter__(self):
         return self
 
+    # find next non-empty line
+    def __nextline__(self):
+        line = next(self.stream, None)
+        if line is not None: line = line.strip()
+        while line == '':
+            line = next(self.stream, None)
+            if line is not None: line = line.strip()
+        return line
+
+    # find next non-empty word
+    def __nextword__(self):
+        word = next(self.words, None)
+        if word is None:
+            line = self.__nextline__()
+            if line is not None:
+                self.words = iter(line.split())
+                word = next(self.words, None)
+        return word
+    
+    # find next token
     def __next__(self):
         # get next word if need be
-        if self.word is None:
-            self.word = next(self.words, None)
-            if self.word is None:
-                line = next(self.stream, '')
-                self.words = iter(line.split())
-                self.word = next(self.words, None)
+        if self.word is None: self.word = self.__nextword__()
 
         # return nothing if there's no input
         if self.word is None: return None
