@@ -1,3 +1,9 @@
+
+# see https://github.com/jutge-org/jutge-python
+
+import sys
+
+
 # iterator class
 class JutgeTokenizer:
 
@@ -28,7 +34,7 @@ class JutgeTokenizer:
                 self.words = iter(line.split())
                 word = next(self.words, None)
         return word
-    
+
     # find next token
     def __next__(self):
         # get next word if need be
@@ -38,7 +44,7 @@ class JutgeTokenizer:
         if self.word is None: return None
 
         # otherwise return whatever
-        if self.typ == chr: 
+        if self.typ == chr:
             value, self.word = self.word[0], self.word[1:]
             if self.word == '': self.word = None
             return value
@@ -59,7 +65,6 @@ class JutgeTokenizer:
 # read method
 files = {}
 def read(*types, **kwargs):
-    import sys
 
     if 'file' in kwargs: f = kwargs['file']
     else: f = sys.stdin
@@ -73,3 +78,9 @@ def read(*types, **kwargs):
         return tokens.nexttoken(types[0])
     else:
         return [tokens.nexttoken(typ) for typ in types]
+
+
+# hack to get more stack size
+
+sys.setrecursionlimit(1000000)
+

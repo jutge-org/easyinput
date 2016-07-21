@@ -1,4 +1,4 @@
-# The `jutge` package [![Build Status](https://travis-ci.org/jutge-org/jutge-python.svg?branch=master)](https://travis-ci.org/jutge-org/jutge-python) 
+# The `jutge` package [![Build Status](https://travis-ci.org/jutge-org/jutge-python.svg?branch=master)](https://travis-ci.org/jutge-org/jutge-python)
 
 ![Logo](logo.png)
 
@@ -16,7 +16,7 @@ beginners an easy interface to read data in
     - Uninstall with `pip3 uninstall jutge`.
 - Python:
     - Install with `pip install jutge`.
-    - Upgrade to lattest version with `pip install jutge --upgrade`.
+    - Upgrade to latest version with `pip install jutge --upgrade`.
     - Uninstall with `pip uninstall jutge`.
 
 
@@ -110,8 +110,17 @@ print('Type name: ' + type(a).__name__)
 a.sayAWord()
 ```
 
+## Extra features
+
+Additionally, when importing the `jutge` package, the maximum depth of the
+Python interpreter stack is increased (using
+`sys.setrecursionlimit(1000000)`). This feature helps solving some recursive
+problems in Jutge.org.
+
+
 
 # Warning
 
-When using `read` interactively, you need to end the input with <kbd>control</kbd> + <kbd>d</kbd> on Linux and Mac
-or <kbd>control</kbd> + <kbd>z</kbd> on Windows.
+When using `read` interactively, you need to end the input with
+<kbd>control</kbd> + <kbd>d</kbd> on Linux and Mac or <kbd>control</kbd> +
+<kbd>z</kbd> on Windows.
