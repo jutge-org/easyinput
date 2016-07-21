@@ -10,7 +10,6 @@ setup(
   url = 'https://github.com/jutge-org/jutge-python',
   download_url = 'https://github.com/jutge-org/jutge-python/tarball/1.5',
   keywords = ['jutge', 'jutge.org', 'education'],
-  classifiers = [],
   license='Apache',
   classifiers=[
         'Development Status :: 5 - Production/Stable',
