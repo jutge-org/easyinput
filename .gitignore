@@ -1,1 +1,5 @@
 test/__pycache__
+MANIFEST
+dist/
+*.pyc
+*~
