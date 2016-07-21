@@ -11,7 +11,7 @@ do
     for t in *.inp
     do
         t=`basename $t .inp`
-        python test.py <$t.inp >$t.out
+        python3 test.py <$t.inp >$t.out
         cmp --silent $t.out $t.cor
         if [ $? -ne 0 ]
         then
