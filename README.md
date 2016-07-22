@@ -13,7 +13,7 @@ beginners an easy interface to read data in
 
 - Python3:
     - Install with `pip3 install jutge`.
-    - Upgrade to lattest version with `pip3 install jutge --upgrade`.
+    - Upgrade to latest version with `pip3 install jutge --upgrade`.
     - Uninstall with `pip3 uninstall jutge`.
 - Python:
     - Install with `pip install jutge`.
