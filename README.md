@@ -1,4 +1,4 @@
-# The `jutge` package [![Build Status](https://travis-ci.org/jutge-org/jutge-python.svg?branch=master)](https://travis-ci.org/jutge-org/jutge-python) [![Python Versions](https://img.shields.io/pypi/v/jutge.svg)](https://pypi.python.org/pypi/jutge) [![PyPi Version](https://img.shields.io/pypi/pyversions/jutge.svg)](https://pypi.python.org/pypi/jutge) 
+# The `jutge` package [![Build Status](https://travis-ci.org/jutge-org/jutge-python.svg?branch=master)](https://travis-ci.org/jutge-org/jutge-python) [![Python Versions](https://img.shields.io/pypi/v/jutge.svg)](https://pypi.python.org/pypi/jutge) [![PyPi Version](https://img.shields.io/pypi/pyversions/jutge.svg)](https://pypi.python.org/pypi/jutge)
 
 
 ![Logo](logo.png)
@@ -29,6 +29,22 @@ input. The type of the token must be given as a parameter: `read(int)`,
 `read` returns `None`. Except for characters, tokens are separated by words, so that `read(str)`
 returns the next word. Whitespace characters cannot be obtained.
 
+Sample program to read two numbers and write their maximum:
+
+```python
+from jutge import read
+
+x = read(int)
+print("x =", x)
+y = read(int)
+print("y =", x)
+if x > y:
+    m = x
+else:
+    m = y
+print("max =", m)
+```
+
 Sample program to compute the sum of a sequence of integers:
 
 ```python
@@ -37,9 +53,24 @@ from jutge import read
 s = 0
 x = read(int)
 while x is not None:
-    s += x
+    s = s + x
     x = read(int)
 print(s)
+```
+
+
+Sample program to count the number of 'A' characters in a text:
+
+```python
+from jutge import read
+
+n = 0
+c = read(chr)
+while c is not None:
+    if c == 'A':
+        n = n + 1
+    c = read(chr)
+print(n)
 ```
 
 
@@ -48,7 +79,7 @@ print(s)
 Function `read` also admits a variable number of parameters. If no parameter
 is given, it defaults to `str`. If more than one parameter is given, it returns
 a list with as many tokens as requested, each of the corresponding type, filling
-with `None` values if input is exhausted.
+the list with `None` values if input is exhausted.
 
 Sample program to compute the sum of two floats:
 
@@ -56,7 +87,7 @@ Sample program to compute the sum of two floats:
 from jutge import read
 
 a, b = read(float, float)
-print(a+b)
+print(a + b)
 ```
 
 Of course, you can also just import the package:
@@ -65,7 +96,7 @@ Of course, you can also just import the package:
 import jutge
 
 a, b = jutge.read(float, float)
-print(a+b)
+print(a + b)
 ```
 
 ## Usage of a file descriptor
@@ -103,8 +134,8 @@ Any type whose constructor accepts a `string` is also supported; for example `re
 from jutge import read
 
 class mytype:
-  def __init__(self, word): self.word = word
-  def sayAWord(self): print(self.word)
+    def __init__(self, word): self.word = word
+    def sayAWord(self): print(self.word)
 
 a = read(mytype)  # a = mytype(inputstring)
 print('Type name: ' + type(a).__name__)
