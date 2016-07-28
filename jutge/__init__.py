@@ -12,6 +12,9 @@ class JutgeTokenizer:
         self.typ = str
         self.words = iter('')
         self.word = None
+        self.worditer = None
+        self.wordidx = 0
+        self.wordlen = 0
 
     def __iter__(self):
         return self
@@ -35,21 +38,30 @@ class JutgeTokenizer:
                 word = next(self.words, None)
         return word
 
+    # init next word data variables
+    def __initnextword__(self):
+        self.word = self.__nextword__()
+        if self.word is not None:
+            self.worditer = iter(self.word)
+            self.wordidx = 0
+            self.wordlen = len(self.word)
+    
     # find next token
     def __next__(self):
         # get next word if need be
-        if self.word is None: self.word = self.__nextword__()
+        if self.word is None: self.__initnextword__()
 
         # return nothing if there's no input
         if self.word is None: return None
 
         # otherwise return whatever
         if self.typ == chr:
-            value, self.word = self.word[0], self.word[1:]
-            if self.word == '': self.word = None
+            value = next(self.worditer)
+            self.wordidx += 1
+            if self.wordidx == self.wordlen: self.word = None
             return value
         else:
-            value = self.typ(self.word)
+            value = self.typ(self.word[self.wordidx:])
             self.word = None
             return value
 
@@ -83,4 +95,3 @@ def read(*types, **kwargs):
 # hack to get more stack size
 
 sys.setrecursionlimit(1000000)
-
