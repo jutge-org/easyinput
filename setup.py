@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
   name = 'jutge',
   packages = ['jutge'],
-  version = '1.5',
+  version = '1.6',
   description = 'Simple functions to read input from Python for problems in Jutge.org.',
   author = 'Jordi Petit',
   author_email = 'jpetit@cs.upc.edu',
