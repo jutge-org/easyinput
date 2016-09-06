@@ -73,6 +73,16 @@ while c is not None:
 print(n)
 ```
 
+Of course, you can also just import the package:
+
+```python
+import jutge, math
+
+x = jutge.read(float)
+print(math.sin(x))
+```
+
+
 
 ## Multiple tokens
 
@@ -87,15 +97,6 @@ Sample program to compute the sum of two floats:
 from jutge import read
 
 a, b = read(float, float)
-print(a + b)
-```
-
-Of course, you can also just import the package:
-
-```python
-import jutge
-
-a, b = jutge.read(float, float)
 print(a + b)
 ```
 
