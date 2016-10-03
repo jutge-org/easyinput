@@ -152,8 +152,31 @@ problems in Jutge.org.
 
 
 
-# Warning
+# Warnings
 
-When using `read` interactively, you need to end the input with
+- When using `read` interactively, you need to end the input with
 <kbd>control</kbd> + <kbd>d</kbd> on Linux and Mac or <kbd>control</kbd> +
 <kbd>z</kbd> on Windows.
+
+- Reading many individual characters is very time consuming. If possible, try to read words and iterate through their characters. Eg:
+
+    ```python
+    # slow:
+    n = 0
+    c = read(chr)
+    while c is not None:
+        if c == 'A':
+            n = n + 1
+        c = read(chr)
+    print(n)
+      
+    # faster:
+    n = 0
+    w = read(str)
+    while w is not None:
+        for c in w:
+            if c == 'A':
+                n = n + 1
+        w = read(str)
+    print(n)
+    ```
