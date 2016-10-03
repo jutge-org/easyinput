@@ -22,10 +22,12 @@ class JutgeTokenizer:
     # find next non-empty line
     def __nextline__(self):
         line = next(self.stream, None)
-        if line is not None: line = line.strip()
+        if line is not None:
+            line = line.strip()
         while line == '':
             line = next(self.stream, None)
-            if line is not None: line = line.strip()
+            if line is not None:
+                line = line.strip()
         return line
 
     # find next non-empty word
@@ -45,20 +47,23 @@ class JutgeTokenizer:
             self.worditer = iter(self.word)
             self.wordidx = 0
             self.wordlen = len(self.word)
-    
+
     # find next token
     def __next__(self):
         # get next word if need be
-        if self.word is None: self.__initnextword__()
+        if self.word is None:
+            self.__initnextword__()
 
         # return nothing if there's no input
-        if self.word is None: return None
+        if self.word is None:
+            return None
 
         # otherwise return whatever
         if self.typ == chr:
             value = next(self.worditer)
             self.wordidx += 1
-            if self.wordidx == self.wordlen: self.word = None
+            if self.wordidx == self.wordlen:
+                self.word = None
             return value
         else:
             value = self.typ(self.word[self.wordidx:])
@@ -69,19 +74,24 @@ class JutgeTokenizer:
     def next(self): return self.__next__()
 
     # call this function to get next token as the specified type
-    def nexttoken(self, typ = str):
+    def nexttoken(self, typ=str):
         self.typ = typ
         return next(self)
 
 
 # read method
 files = {}
+
+
 def read(*types, **kwargs):
 
-    if 'file' in kwargs: f = kwargs['file']
-    else: f = sys.stdin
+    if 'file' in kwargs:
+        f = kwargs['file']
+    else:
+        f = sys.stdin
 
-    if f not in files: files[f] = JutgeTokenizer(f)
+    if f not in files:
+        files[f] = JutgeTokenizer(f)
     tokens = files[f]
 
     if len(types) == 0:
