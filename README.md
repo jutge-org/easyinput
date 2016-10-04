@@ -13,11 +13,11 @@ beginners an easy interface to read data in
 
 - Python3:
     - Install with `pip3 install jutge`.
-    - Upgrade to latest version with `pip3 install jutge --upgrade`.
+    - Upgrade to latest version with `pip3 install --upgrade jutge`.
     - Uninstall with `pip3 uninstall jutge`.
 - Python:
     - Install with `pip install jutge`.
-    - Upgrade to latest version with `pip install jutge --upgrade`.
+    - Upgrade to latest version with `pip install --upgrade jutge`.
     - Uninstall with `pip uninstall jutge`.
 
 
@@ -154,6 +154,11 @@ a = read(mytype)  # a = mytype(inputstring)
 print('Type name: ' + type(a).__name__)
 a.sayAWord()
 ```
+
+## Version
+
+The variable `jutge.version` keeps the version of the package.
+
 
 ## Extra features
 
