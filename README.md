@@ -100,9 +100,9 @@ a, b = read(float, float)
 print(a + b)
 ```
 
-## Usage of a file descriptor
+## Usage of a file stream
 
-Additionally, the `read` function accepts a `file` keyword argument that specifies the file descriptor to read from. By default, `file` stands for `sys.stdin`.
+Additionally, the `read` function accepts a `file` keyword argument that specifies the file stream to read from. By default, `file` stands for `sys.stdin`.
 
 Sample program to read each number from an open file:
 
@@ -116,10 +116,22 @@ with open('file.txt') as f:
         x = read(int, file=f)
 ```
 
+Under Python3, one can use `io.StringIO` to read from strings by converting them into streams:
+
+```Python
+import io
+from jutge import read
+
+string = "21 40\n"
+stream = io.StringIO(string)
+x = read(int, file=stream)
+y = read(int, file=stream)
+print(x + y)
+```
 
 ## Basic types
 
-The `read`function supports the following basic built-in types:
+The `read` function supports the following basic built-in types:
 
 - integer (`int`),
 - floating point (`float`),
