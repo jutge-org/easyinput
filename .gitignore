@@ -1,4 +1,4 @@
-test/__pycache__
+.cache
 MANIFEST
 dist/
 *.pyc

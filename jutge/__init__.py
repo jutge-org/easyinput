@@ -4,6 +4,10 @@
 import sys
 
 
+# current version
+version = "1.8"
+
+
 # iterator class
 class JutgeTokenizer:
 

@@ -1,14 +1,17 @@
 from distutils.core import setup
 
+import jutge
+
+
 setup(
     name='jutge',
     packages=['jutge'],
-    version='1.7',
+    version=jutge.version,
     description='Simple functions to read input from Python for problems in Jutge.org.',
     author='Jordi Petit',
     author_email='jpetit@cs.upc.edu',
     url='https://github.com/jutge-org/jutge-python',
-    download_url='https://github.com/jutge-org/jutge-python/tarball/1.7',
+    download_url='https://github.com/jutge-org/jutge-python/tarball/%s' % jutge.version,
     keywords=['jutge', 'jutge.org', 'education'],
     license='Apache',
     classifiers=[
@@ -30,7 +33,7 @@ setup(
 
 # Steps to distribute new version:
 #
-# Increment version id in "version" and "download_url"
+# Increment version in jutge/__init__py
 # git commit -a
 # git push
 # git tag 1.12345 -m "Release 1.12345"
