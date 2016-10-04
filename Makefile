@@ -6,4 +6,4 @@ all:
 	@echo "Targets: test"
 
 test:
-	pytest
+	py.test
