@@ -1,6 +1,5 @@
 # The `jutge` package [![Build Status](https://travis-ci.org/jutge-org/jutge-python.svg?branch=master)](https://travis-ci.org/jutge-org/jutge-python) [![Python Versions](https://img.shields.io/pypi/v/jutge.svg)](https://pypi.python.org/pypi/jutge) [![PyPi Version](https://img.shields.io/pypi/pyversions/jutge.svg)](https://pypi.python.org/pypi/jutge)
 
-
 ![Logo](logo.png)
 
 This tiny package offers a simple function to read input from
@@ -21,7 +20,7 @@ beginners an easy interface to read data in
     - Uninstall with `pip uninstall jutge`.
 
 
-# Description
+# Usage
 
 This package exports a `read` function that returns the next token of the
 input. The type of the token must be given as a parameter: `read(int)`,
@@ -166,8 +165,7 @@ Python interpreter stack is increased (using
 problems in Jutge.org.
 
 
-
-# Usage warnings
+## Usage warnings
 
 - When using `read` interactively, you need to end the input with
 <kbd>control</kbd> + <kbd>d</kbd> on Linux and Mac or <kbd>control</kbd> +
@@ -195,3 +193,13 @@ problems in Jutge.org.
         w = read(str)
     print(n)
     ```
+
+# Credits
+
+- Jordi Petit https://github.com/jordi-petit
+- Albert Lobo https://github.com/llop
+
+
+# License
+
+[Apache License 2.0](LICENSE.md)
