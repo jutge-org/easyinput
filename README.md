@@ -196,10 +196,10 @@ problems in Jutge.org.
 
 # Credits
 
-- Jordi Petit https://github.com/jordi-petit
+- Jordi Petit https://github.com/jordi-petit 
 - Albert Lobo https://github.com/llop
 
 
 # License
 
-[Apache License 2.0](LICENSE.txt)
+[Apache License 2.0](https://raw.githubusercontent.com/jutge-org/jutge-python/master/LICENSE.txt)
