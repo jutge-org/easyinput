@@ -35,14 +35,12 @@ Sample program to read two numbers and write their maximum:
 from jutge import read
 
 x = read(int)
-print("x =", x)
 y = read(int)
-print("y =", x)
 if x > y:
     m = x
 else:
     m = y
-print("max =", m)
+print(m)
 ```
 
 Sample program to compute the sum of a sequence of integers:
@@ -73,7 +71,7 @@ while c is not None:
 print(n)
 ```
 
-Of course, you can also just import the package:
+Of course, you can also just import the package and prefix the `read` function with `jutge`:
 
 ```python
 import jutge, math
@@ -86,7 +84,7 @@ print(math.sin(x))
 
 ## Multiple tokens
 
-Function `read` also admits a variable number of parameters. If no parameter
+The `read` function also admits a variable number of parameters. If no parameter
 is given, it defaults to `str`. If more than one parameter is given, it returns
 a list with as many tokens as requested, each of the corresponding type, filling
 the list with `None` values if input is exhausted.
@@ -169,7 +167,7 @@ problems in Jutge.org.
 
 
 
-# Warnings
+# Usage warnings
 
 - When using `read` interactively, you need to end the input with
 <kbd>control</kbd> + <kbd>d</kbd> on Linux and Mac or <kbd>control</kbd> +
