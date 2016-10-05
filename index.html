@@ -1,0 +1,235 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>jutge-python by jutge-org</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>jutge-python</h1>
+        <p>Simple function to read input from Python for problems in Jutge.org</p>
+
+        <p class="view"><a href="https://github.com/jutge-org/jutge-python">View the Project on GitHub <small>jutge-org/jutge-python</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/jutge-org/jutge-python/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/jutge-org/jutge-python/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/jutge-org/jutge-python">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="the-jutge-package---" class="anchor" href="#the-jutge-package---" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The <code>jutge</code> package <a href="https://travis-ci.org/jutge-org/jutge-python"><img src="https://travis-ci.org/jutge-org/jutge-python.svg?branch=master" alt="Build Status"></a> <a href="https://pypi.python.org/pypi/jutge"><img src="https://img.shields.io/pypi/v/jutge.svg" alt="Python Versions"></a> <a href="https://pypi.python.org/pypi/jutge"><img src="https://img.shields.io/pypi/pyversions/jutge.svg" alt="PyPi Version"></a>
+</h1>
+
+<p><img src="logo.png" alt="Logo"></p>
+
+<p>This tiny package offers a simple function to read input from
+Python for problems in Jutge.org. It was built in order to offer
+beginners an easy interface to read data in
+<a href="https://www.jutge.org">Jutge.org</a> problems.</p>
+
+<h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h1>
+
+<ul>
+<li>Python3:
+
+<ul>
+<li>Install with <code>pip3 install jutge</code>.</li>
+<li>Upgrade to latest version with <code>pip3 install --upgrade jutge</code>.</li>
+<li>Uninstall with <code>pip3 uninstall jutge</code>.</li>
+</ul>
+</li>
+<li>Python:
+
+<ul>
+<li>Install with <code>pip install jutge</code>.</li>
+<li>Upgrade to latest version with <code>pip install --upgrade jutge</code>.</li>
+<li>Uninstall with <code>pip uninstall jutge</code>.</li>
+</ul>
+</li>
+</ul>
+
+<h1>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description</h1>
+
+<p>This package exports a <code>read</code> function that returns the next token of the
+input. The type of the token must be given as a parameter: <code>read(int)</code>,
+<code>read(float)</code>, <code>read(str)</code>, <code>read(chr)</code>... In the event no more tokens are available,
+<code>read</code> returns <code>None</code>. Except for characters, tokens are separated by words, so that <code>read(str)</code>
+returns the next word. Whitespace characters cannot be obtained.</p>
+
+<p>Sample program to read two numbers and write their maximum:</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> jutge <span class="pl-k">import</span> read
+
+x <span class="pl-k">=</span> read(<span class="pl-c1">int</span>)
+y <span class="pl-k">=</span> read(<span class="pl-c1">int</span>)
+<span class="pl-k">if</span> x <span class="pl-k">&gt;</span> y:
+    m <span class="pl-k">=</span> x
+<span class="pl-k">else</span>:
+    m <span class="pl-k">=</span> y
+<span class="pl-c1">print</span>(m)</pre></div>
+
+<p>Sample program to compute the sum of a sequence of integers:</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> jutge <span class="pl-k">import</span> read
+
+s <span class="pl-k">=</span> <span class="pl-c1">0</span>
+x <span class="pl-k">=</span> read(<span class="pl-c1">int</span>)
+<span class="pl-k">while</span> x <span class="pl-k">is</span> <span class="pl-k">not</span> <span class="pl-c1">None</span>:
+    s <span class="pl-k">=</span> s <span class="pl-k">+</span> x
+    x <span class="pl-k">=</span> read(<span class="pl-c1">int</span>)
+<span class="pl-c1">print</span>(s)</pre></div>
+
+<p>Sample program to count the number of 'A' characters in a text:</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> jutge <span class="pl-k">import</span> read
+
+n <span class="pl-k">=</span> <span class="pl-c1">0</span>
+c <span class="pl-k">=</span> read(<span class="pl-c1">chr</span>)
+<span class="pl-k">while</span> c <span class="pl-k">is</span> <span class="pl-k">not</span> <span class="pl-c1">None</span>:
+    <span class="pl-k">if</span> c <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>:
+        n <span class="pl-k">=</span> n <span class="pl-k">+</span> <span class="pl-c1">1</span>
+    c <span class="pl-k">=</span> read(<span class="pl-c1">chr</span>)
+<span class="pl-c1">print</span>(n)</pre></div>
+
+<p>Of course, you can also just import the package and prefix the <code>read</code> function with <code>jutge</code>:</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">import</span> jutge, math
+
+x <span class="pl-k">=</span> jutge.read(<span class="pl-c1">float</span>)
+<span class="pl-c1">print</span>(math.sin(x))</pre></div>
+
+<h2>
+<a id="multiple-tokens" class="anchor" href="#multiple-tokens" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Multiple tokens</h2>
+
+<p>The <code>read</code> function also admits a variable number of parameters. If no parameter
+is given, it defaults to <code>str</code>. If more than one parameter is given, it returns
+a list with as many tokens as requested, each of the corresponding type, filling
+the list with <code>None</code> values if input is exhausted.</p>
+
+<p>Sample program to compute the sum of two floats:</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> jutge <span class="pl-k">import</span> read
+
+a, b <span class="pl-k">=</span> read(<span class="pl-c1">float</span>, <span class="pl-c1">float</span>)
+<span class="pl-c1">print</span>(a <span class="pl-k">+</span> b)</pre></div>
+
+<h2>
+<a id="usage-of-a-file-stream" class="anchor" href="#usage-of-a-file-stream" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage of a file stream</h2>
+
+<p>Additionally, the <code>read</code> function accepts a <code>file</code> keyword argument that specifies the file stream to read from. By default, <code>file</code> stands for <code>sys.stdin</code>.</p>
+
+<p>Sample program to read each number from an open file:</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> jutge <span class="pl-k">import</span> read
+
+<span class="pl-k">with</span> <span class="pl-c1">open</span>(<span class="pl-s"><span class="pl-pds">'</span>file.txt<span class="pl-pds">'</span></span>) <span class="pl-k">as</span> f:
+    x <span class="pl-k">=</span> read(<span class="pl-c1">int</span>, <span class="pl-v">file</span><span class="pl-k">=</span>f)
+    <span class="pl-k">while</span> x <span class="pl-k">is</span> <span class="pl-k">not</span> <span class="pl-c1">None</span>:
+        <span class="pl-c1">print</span>(x)
+        x <span class="pl-k">=</span> read(<span class="pl-c1">int</span>, <span class="pl-v">file</span><span class="pl-k">=</span>f)</pre></div>
+
+<p>Under Python3, one can use <code>io.StringIO</code> to read from strings by converting them into streams:</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">import</span> io
+<span class="pl-k">from</span> jutge <span class="pl-k">import</span> read
+
+string <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>21 40<span class="pl-cce">\n</span><span class="pl-pds">"</span></span>
+stream <span class="pl-k">=</span> io.StringIO(string)
+x <span class="pl-k">=</span> read(<span class="pl-c1">int</span>, <span class="pl-v">file</span><span class="pl-k">=</span>stream)
+y <span class="pl-k">=</span> read(<span class="pl-c1">int</span>, <span class="pl-v">file</span><span class="pl-k">=</span>stream)
+<span class="pl-c1">print</span>(x <span class="pl-k">+</span> y)</pre></div>
+
+<h2>
+<a id="basic-types" class="anchor" href="#basic-types" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic types</h2>
+
+<p>The <code>read</code> function supports the following basic built-in types:</p>
+
+<ul>
+<li>integer (<code>int</code>),</li>
+<li>floating point (<code>float</code>),</li>
+<li>character (<code>chr</code>),</li>
+<li>string (<code>str</code>).</li>
+</ul>
+
+<h2>
+<a id="user-defined-types" class="anchor" href="#user-defined-types" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>User defined types</h2>
+
+<p>Any type whose constructor accepts a <code>string</code> is also supported; for example <code>read(iter)</code> will yield a string iterator:</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> jutge <span class="pl-k">import</span> read
+
+<span class="pl-k">class</span> <span class="pl-en">mytype</span>:
+    <span class="pl-k">def</span> <span class="pl-c1">__init__</span>(<span class="pl-smi"><span class="pl-smi">self</span></span>, <span class="pl-smi">word</span>): <span class="pl-v">self</span>.word <span class="pl-k">=</span> word
+    <span class="pl-k">def</span> <span class="pl-en">sayAWord</span>(<span class="pl-smi"><span class="pl-smi">self</span></span>): <span class="pl-c1">print</span>(<span class="pl-v">self</span>.word)
+
+a <span class="pl-k">=</span> read(mytype)  <span class="pl-c"># a = mytype(inputstring)</span>
+<span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">'</span>Type name: <span class="pl-pds">'</span></span> <span class="pl-k">+</span> <span class="pl-c1">type</span>(a).<span class="pl-c1">__name__</span>)
+a.sayAWord()</pre></div>
+
+<h2>
+<a id="version" class="anchor" href="#version" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Version</h2>
+
+<p>The variable <code>jutge.version</code> keeps the version of the package.</p>
+
+<h2>
+<a id="extra-features" class="anchor" href="#extra-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Extra features</h2>
+
+<p>Additionally, when importing the <code>jutge</code> package, the maximum depth of the
+Python interpreter stack is increased (using
+<code>sys.setrecursionlimit(1000000)</code>). This feature helps solving some recursive
+problems in Jutge.org.</p>
+
+<h1>
+<a id="usage-warnings" class="anchor" href="#usage-warnings" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage warnings</h1>
+
+<ul>
+<li><p>When using <code>read</code> interactively, you need to end the input with
+<kbd>control</kbd> + <kbd>d</kbd> on Linux and Mac or <kbd>control</kbd> +
+<kbd>z</kbd> on Windows.</p></li>
+<li>
+<p>Reading many individual characters is very time consuming. If possible, try to read words and iterate through their characters. Eg:</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># slow:</span>
+n <span class="pl-k">=</span> <span class="pl-c1">0</span>
+c <span class="pl-k">=</span> read(<span class="pl-c1">chr</span>)
+<span class="pl-k">while</span> c <span class="pl-k">is</span> <span class="pl-k">not</span> <span class="pl-c1">None</span>:
+    <span class="pl-k">if</span> c <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>:
+        n <span class="pl-k">=</span> n <span class="pl-k">+</span> <span class="pl-c1">1</span>
+    c <span class="pl-k">=</span> read(<span class="pl-c1">chr</span>)
+<span class="pl-c1">print</span>(n)
+
+<span class="pl-c"># faster:</span>
+n <span class="pl-k">=</span> <span class="pl-c1">0</span>
+w <span class="pl-k">=</span> read(<span class="pl-c1">str</span>)
+<span class="pl-k">while</span> w <span class="pl-k">is</span> <span class="pl-k">not</span> <span class="pl-c1">None</span>:
+    <span class="pl-k">for</span> c <span class="pl-k">in</span> w:
+        <span class="pl-k">if</span> c <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>:
+            n <span class="pl-k">=</span> n <span class="pl-k">+</span> <span class="pl-c1">1</span>
+    w <span class="pl-k">=</span> read(<span class="pl-c1">str</span>)
+<span class="pl-c1">print</span>(n)</pre></div>
+</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/jutge-org">jutge-org</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
