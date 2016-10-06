@@ -3,4 +3,6 @@ python:
   - "3.5"
 before_install:
     - pip install pytest
-script: make test
+    - pip install coverage
+    - pip install flake8
+script: make

@@ -1,9 +1,8 @@
 export PYTHONPATH=${CURDIR}
 
-.PHONY: all test coverage clean
+.PHONY: all test coverage flake8 clean
 
-all:
-	@echo "Targets: test coverage clean"
+all: test coverage flake8
 
 test:
 	py.test
@@ -11,6 +10,10 @@ test:
 coverage:
 	coverage run --source jutge -m py.test
 	coverage report
+
+# we ignore the "E501 line too long" diagnostics
+flake8:
+	flake8 --ignore=E501 .
 
 clean:
 	rm -rf .cache MANIFEST dist .coverage htmlcov */*,cover */__pycache__ *~ */*~ */*.pyc
