@@ -11,8 +11,8 @@ class Test:
         [x, y, z] = read(int, int, int)
         assert [x, y, z] == [10, 20, 30]
 
-    def setup_method(self):
+    def setup_method(self, method):
         self.orig_stdin = sys.stdin
 
-    def teardown_method(self):
+    def teardown_method(self, method):
         sys.stdin = self.orig_stdin
