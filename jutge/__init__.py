@@ -75,7 +75,8 @@ class JutgeTokenizer:
             return value
 
     # python2 compatible
-    def next(self): return self.__next__()
+    def next(self):
+        return self.__next__()
 
     # call this function to get next token as the specified type
     def nexttoken(self, typ=str):
