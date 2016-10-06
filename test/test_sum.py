@@ -53,5 +53,5 @@ def test_8():
 
 
 def test_9():
-    data = "1 " * 1000000
+    data = "1 " * 100000
     check(data)
