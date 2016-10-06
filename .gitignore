@@ -3,3 +3,6 @@ MANIFEST
 dist/
 *.pyc
 *~
+.coverage
+htmlcov/
+*,cover
