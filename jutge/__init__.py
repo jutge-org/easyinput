@@ -1,14 +1,17 @@
-# see https://github.com/jutge-org/jutge-python
+"""
+jutge package for alternative input handling.
+see https://github.com/jutge-org/jutge-python
+"""
 
 import sys
+
 __all__ = ['read', 'keep_reading']  # Specify what to import with *
-
-# current version
-version = "1.8"
+version = "1.8"  # current version
 
 
-# iterator class
 class JutgeTokenizer:
+    """Iterator class for parsing and converting tokens
+    from a stream."""
 
     def __init__(self, stream):
         self.stream = stream
@@ -22,16 +25,16 @@ class JutgeTokenizer:
     def __iter__(self):
         return self
 
-    # find next non-empty line
     def __nextline__(self):
+        """Find next non-empty line"""
         for line in self.stream:
             line = line.strip()
             if line:
                 return line
         return None
 
-    # find next non-empty word
     def __nextword__(self):
+        """Find next non-empty word"""
         word = next(self.words, None)
         if word is None:
             line = self.__nextline__()
@@ -40,16 +43,16 @@ class JutgeTokenizer:
                 word = next(self.words, None)
         return word
 
-    # init next word data variables
     def __initnextword__(self):
+        """Init next word and corresponding variables"""
         self.word = self.__nextword__()
         if self.word is not None:
             self.worditer = iter(self.word)
             self.wordidx = 0
             self.wordlen = len(self.word)
 
-    # find next token
     def __next__(self):
+        """Find next token using current `self.type`."""
         # get next word if need be
         if self.word is None:
             self.__initnextword__()
@@ -70,21 +73,28 @@ class JutgeTokenizer:
             self.word = None
             return value
 
-    # python2 compatible
     def next(self):
+        """For Python2 compatibiliti purposes."""
         return self.__next__()
 
-    # call this function to get next token as the specified type
     def nexttoken(self, typ=str):
+        """Get next token as the specified type."""
         self.typ = typ
         return next(self)
 
 
 class StdIn:
+    """
+    sys.stdin emulator class. Uses `input()` builtin rather
+    than directly using sys.stdin to allow usage within an
+    interactive session.
+    """
 
-    # Internal implementation to allow singleton pattern:
     class __StdIn:
-        def __next__(self):
+        """Internal "hidden" implementation for singleton
+        design pattern."""
+
+        def __next__(self):  # Core method
             try:
                 return input()
             except EOFError:
@@ -105,16 +115,27 @@ class StdIn:
         return StdIn.instance.__getattribute__(item)
 
 
-# read method
-files = {"stdin": StdIn()}
+files = {"stdin": StdIn()}  # dictionary of open files
 
 
 def read(*types, file=files["stdin"], amount: int = 1):
+    """
+    This function returns one or more tokens converted to
+    the types specified by *types.
+    This is the main function in the module.
+
+    :param types: sequence of callable types
+    :param file: stream from which to read; has to be an
+        iterable object, with `__next__` returning a string
+    :param amount: repeat reading of *types by this amount
+    :return: either a single value or a generator iterator
+        with each of the tokens converted to the appropriate type
+    """
+
     if not isinstance(amount, int):
         raise TypeError("Expected integer amount")
     if not amount > 0:
         raise ValueError("Expected positive amount")
-
     if file not in files:
         files[file] = JutgeTokenizer(file)
     tokens = files[file]
@@ -130,6 +151,14 @@ def read(*types, file=files["stdin"], amount: int = 1):
 
 
 def keep_reading(*types, **kwargs):
+    """
+    Generator that yields converted tokens while the
+    stream is not empty and the tokens can be converted
+    to the specified types.
+
+    Effective signature is the same as `jutge.read`.
+    """
+
     try:
         values = read(*types, **kwargs)
         while values is not None:
@@ -139,5 +168,4 @@ def keep_reading(*types, **kwargs):
         return
 
 
-# hack to get more stack size
-sys.setrecursionlimit(1000000)
+sys.setrecursionlimit(1000000)  # hack to get more stack size

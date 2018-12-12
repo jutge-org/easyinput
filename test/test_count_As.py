@@ -2,7 +2,7 @@ import io
 import jutge
 
 
-def countas(data):
+def count_As(data):
     stream = io.StringIO(data)
     c = 0
     x = jutge.read(chr, file=stream)
@@ -14,20 +14,20 @@ def countas(data):
 
 
 def test_1():
-    assert countas("i am a strong boy") == 2
+    assert count_As("i am a strong boy") == 2
 
 
 def test_2():
-    assert countas("a") == 1
+    assert count_As("a") == 1
 
 
 def test_3():
-    assert countas("") == 0
+    assert count_As("") == 0
 
 
 def test_4():
-    assert countas("a a") == 2
+    assert count_As("a a") == 2
 
 
 def test_5():
-    assert countas("aa") == 2
+    assert count_As("aa") == 2
