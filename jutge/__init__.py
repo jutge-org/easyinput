@@ -110,6 +110,11 @@ files = {}
 
 
 def read(*types, file=StdIn(), amount: int = 1):
+    if not isinstance(amount, int):
+        raise TypeError("Expected integer amount")
+    if not amount > 0:
+        raise ValueError("Expected positive amount")
+
     if file not in files:
         files[file] = JutgeTokenizer(file)
     tokens = files[file]
