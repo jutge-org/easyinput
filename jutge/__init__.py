@@ -93,6 +93,9 @@ class StdIn:
             except EOFError:
                 return None
 
+        def __iter__(self):
+            return self
+
     # Singleton instance:
     instance = None
 
