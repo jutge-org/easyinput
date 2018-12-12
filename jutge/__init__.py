@@ -129,5 +129,15 @@ def read(*types, file=StdIn(), amount: int = 1):
         return (tokens.nexttoken(typ) for typ in types for _ in range(amount))
 
 
+def keep_reading(*types, **kwargs):
+    try:
+        values = read(*types, **kwargs)
+        while values is not None:
+            yield values
+            values = read(*types, **kwargs)
+    except ValueError:
+        return
+
+
 # hack to get more stack size
 sys.setrecursionlimit(1000000)
