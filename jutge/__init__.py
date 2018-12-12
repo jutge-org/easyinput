@@ -1,4 +1,3 @@
-
 # see https://github.com/jutge-org/jutge-python
 
 import sys
@@ -88,16 +87,10 @@ class JutgeTokenizer:
 files = {}
 
 
-def read(*types, **kwargs):
-
-    if 'file' in kwargs:
-        f = kwargs['file']
-    else:
-        f = sys.stdin
-
-    if f not in files:
-        files[f] = JutgeTokenizer(f)
-    tokens = files[f]
+def read(*types, file=sys.stdin):
+    if file not in files:
+        files[file] = JutgeTokenizer(file)
+    tokens = files[file]
 
     if len(types) == 0:
         return tokens.nexttoken()
@@ -108,5 +101,4 @@ def read(*types, **kwargs):
 
 
 # hack to get more stack size
-
 sys.setrecursionlimit(1000000)
