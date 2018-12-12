@@ -1,7 +1,7 @@
 # see https://github.com/jutge-org/jutge-python
 
 import sys
-
+__all__ = ['read', 'keep_reading']  # Specify what to import with *
 
 # current version
 version = "1.8"
@@ -104,15 +104,15 @@ class StdIn:
             StdIn.instance = StdIn.__StdIn()
         return StdIn.instance  # Use singleton
 
-    def __next__(self):
-        return StdIn.instance.__next__()
+    def __getattribute__(self, item):
+        return StdIn.instance.__getattribute__(item)
 
 
 # read method
-files = {}
+files = {"stdin": StdIn()}
 
 
-def read(*types, file=StdIn(), amount: int = 1):
+def read(*types, file=files["stdin"], amount: int = 1):
     if not isinstance(amount, int):
         raise TypeError("Expected integer amount")
     if not amount > 0:
