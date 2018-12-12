@@ -98,7 +98,7 @@ class StdIn:
             try:
                 return input()
             except EOFError:
-                return None
+                raise StopIteration
 
         def __iter__(self):
             return self
