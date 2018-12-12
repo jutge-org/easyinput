@@ -87,15 +87,17 @@ class JutgeTokenizer:
 files = {}
 
 
-def read(*types, file=sys.stdin):
+def read(*types, file=sys.stdin, amount: int = 1):
     if file not in files:
         files[file] = JutgeTokenizer(file)
     tokens = files[file]
 
-    if len(types) == 0:
-        return tokens.nexttoken()
-    elif len(types) == 1:
-        return tokens.nexttoken(types[0])
+    if len(types) <= 1:
+        typ = types[0] if types else str
+        if amount == 1:
+            return tokens.nexttoken(typ)
+        else:
+            return (tokens.nexttoken(typ) for _ in range(amount))
     else:
         return (tokens.nexttoken(typ) for typ in types)
 
