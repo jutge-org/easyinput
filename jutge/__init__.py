@@ -97,7 +97,7 @@ def read(*types, file=sys.stdin):
     elif len(types) == 1:
         return tokens.nexttoken(types[0])
     else:
-        return [tokens.nexttoken(typ) for typ in types]
+        return (tokens.nexttoken(typ) for typ in types)
 
 
 # hack to get more stack size
