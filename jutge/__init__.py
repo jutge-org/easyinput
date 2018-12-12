@@ -24,14 +24,11 @@ class JutgeTokenizer:
 
     # find next non-empty line
     def __nextline__(self):
-        line = next(self.stream, None)
-        if line is not None:
+        for line in self.stream:
             line = line.strip()
-        while line == '':
-            line = next(self.stream, None)
-            if line is not None:
-                line = line.strip()
-        return line
+            if line:
+                return line
+        return None
 
     # find next non-empty word
     def __nextword__(self):
