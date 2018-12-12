@@ -83,11 +83,33 @@ class JutgeTokenizer:
         return next(self)
 
 
+class StdIn:
+
+    # Internal implementation to allow singleton pattern:
+    class __StdIn:
+        def __next__(self):
+            try:
+                return input()
+            except EOFError:
+                return None
+
+    # Singleton instance:
+    instance = None
+
+    def __new__(cls):
+        if StdIn.instance is None:
+            StdIn.instance = StdIn.__StdIn()
+        return StdIn.instance  # Use singleton
+
+    def __next__(self):
+        return StdIn.instance.__next__()
+
+
 # read method
 files = {}
 
 
-def read(*types, file=sys.stdin, amount: int = 1):
+def read(*types, file=StdIn(), amount: int = 1):
     if file not in files:
         files[file] = JutgeTokenizer(file)
     tokens = files[file]
