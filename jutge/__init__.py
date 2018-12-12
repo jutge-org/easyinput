@@ -126,7 +126,7 @@ def read(*types, file=StdIn(), amount: int = 1):
         else:
             return (tokens.nexttoken(typ) for _ in range(amount))
     else:
-        return (tokens.nexttoken(typ) for typ in types)
+        return (tokens.nexttoken(typ) for typ in types for _ in range(amount))
 
 
 # hack to get more stack size
