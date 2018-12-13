@@ -5,7 +5,7 @@ see https://github.com/jutge-org/jutge-python
 
 import sys
 from builtins import int  # for Python2 compatibility
-from utils import *
+from jutge.utils import extract_kwargs
 
 __all__ = ['read', 'keep_reading']  # Specify what to import with *
 version = "1.8"  # current version
