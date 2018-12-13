@@ -4,7 +4,7 @@ import jutge
 
 def upper_jutge(data):
     stream = io.StringIO(data)
-    return sum(x.upper() for x in jutge.keep_reading(file=stream))
+    return "".join(x.upper() for x in jutge.keep_reading(file=stream))
 
 
 def upper_python(data):
