@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import io
 import jutge
 
@@ -8,7 +9,7 @@ def upper_jutge(data):
 
 
 def upper_python(data):
-    return "".join(map(str.upper, data.split()))
+    return "".join(word.upper() for word in data.split())
 
 
 def check(data):
@@ -24,7 +25,7 @@ def test_2():
 
 
 def test_3():
-    check("jordi mireia arnau")
+    check("jordi mireia arna")
 
 
 def test_4():
