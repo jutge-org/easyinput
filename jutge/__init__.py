@@ -131,7 +131,7 @@ def read(*types, file=files["stdin"], amount: int = 1):
         return (tokens.nexttoken(typ) for typ in types for _ in range(amount))
 
 
-def keep_reading(*types, **kwargs):
+def keep_reading(*types, file=files["stdin"]):
     """
     Generator that yields converted tokens while the
     stream is not empty and the tokens can be converted
@@ -141,10 +141,10 @@ def keep_reading(*types, **kwargs):
     """
 
     try:
-        values = read(*types, **kwargs)
+        values = read(*types, file=file)
         while values is not None:
             yield values
-            values = read(*types, **kwargs)
+            values = read(*types, file=file)
     except ValueError:
         return
 
