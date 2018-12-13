@@ -4,12 +4,7 @@ import jutge
 
 def sum_jutge(data):
     stream = io.StringIO(data)
-    s = 0
-    x = jutge.read(int, file=stream)
-    while x is not None:
-        s += x
-        x = jutge.read(int, file=stream)
-    return s
+    return sum(jutge.keep_reading(int, file=stream))
 
 
 def sum_python(data):

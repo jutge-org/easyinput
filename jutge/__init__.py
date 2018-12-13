@@ -74,7 +74,7 @@ class JutgeTokenizer:
             return value
 
     def next(self):
-        """For Python2 compatibiliti purposes."""
+        """For Python2 compatibility purposes."""
         return self.__next__()
 
     def nexttoken(self, typ=str):
