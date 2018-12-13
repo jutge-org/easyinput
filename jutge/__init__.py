@@ -84,7 +84,7 @@ class JutgeTokenizer:
         return next(self)
 
 
-def StdIn() -> iter:
+def StdIn():
     """
     Generator that emulates `sys.stdin`. Uses `input()` builtin
     rather than directly using sys.stdin to allow usage within an
@@ -100,7 +100,7 @@ def StdIn() -> iter:
 files = {"stdin": StdIn()}  # dictionary of open files
 
 
-def read(*types, file=files["stdin"], amount: int = 1):
+def read(*types, file=files["stdin"], amount=1):
     """
     This function returns one or more tokens converted to
     the types specified by *types.
