@@ -2,7 +2,7 @@ import jutge
 
 
 def test1():
-    source = open('./test/text/test1.txt', 'r')
+    source = open('./test/text/source1.txt', 'r')
     expected = (
         'hello', 'world', 'Python', 'rocks!', '32.14', r'\n', r'^D'
     )
@@ -11,12 +11,12 @@ def test1():
 
 
 def test2():
-    source = open('./test/text/test1.txt', 'r')
+    source = open('./test/text/source1.txt', 'r')
     assert not tuple(jutge.keep_reading(int, file=source))
 
 
 def test3():
-    source = open('./test/text/test2.txt', 'r')
+    source = open('./test/text/source2.txt', 'r')
     expected = (
         2, -3, 8
     )
@@ -25,7 +25,7 @@ def test3():
 
 
 def test4():
-    source = open('./test/text/test2.txt', 'r')
+    source = open('./test/text/source2.txt', 'r')
     expected = (
         2, -3, 8, 3.14, 12
     )
