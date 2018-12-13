@@ -5,6 +5,7 @@ see https://github.com/jutge-org/jutge-python
 
 import sys
 from builtins import int  # for Python2 compatibility
+from utils import *
 
 __all__ = ['read', 'keep_reading']  # Specify what to import with *
 version = "1.8"  # current version
@@ -97,23 +98,19 @@ def StdIn():
         return
 
 
-files = {"stdin": StdIn()}  # dictionary of open files
+files = {'stdin': StdIn()}  # dictionary of open files
 
 
-def read(*types, file=files["stdin"], amount=1):
+@extract_kwargs(file=files['stdin'], amount=1)  # Python 2 compatibility
+def read(*types, **kwargs):
     """
+    Py3 signature: `read(*types, file=files['stdin'], amount: int = 1) -> iter`
     This function returns one or more tokens converted to
     the types specified by *types.
     This is the main function in the module.
-
-    :param types: sequence of callable types
-    :param file: stream from which to read; has to be an
-        iterable object, with `__next__` returning a string
-    :param amount: repeat reading of *types by this amount
-    :return: either a single value or a generator iterator
-        with each of the tokens converted to the appropriate type
     """
 
+    file, amount = kwargs['file'], kwargs['amount']
     if not isinstance(amount, int):
         raise TypeError("Expected integer amount")
     if not amount > 0:
@@ -132,15 +129,16 @@ def read(*types, file=files["stdin"], amount=1):
         return (tokens.nexttoken(typ) for typ in types for _ in range(amount))
 
 
-def keep_reading(*types, file=files["stdin"]):
+@extract_kwargs(file=files['stdin'])  # Python 2 compatibility
+def keep_reading(*types, **kwargs):
     """
+    Py3 signature: `keep_reading(*types, file=files['stdin']) -> iter`
     Generator that yields converted tokens while the
     stream is not empty and the tokens can be converted
     to the specified types.
-
-    Effective signature is the same as `jutge.read`.
     """
 
+    file = kwargs['file']
     try:
         values = read(*types, file=file)
         while values is not None:
