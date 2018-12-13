@@ -83,36 +83,17 @@ class JutgeTokenizer:
         return next(self)
 
 
-class StdIn:
+def StdIn() -> iter:
     """
-    sys.stdin emulator class. Uses `input()` builtin rather
-    than directly using sys.stdin to allow usage within an
+    Generator that emulates `sys.stdin`. Uses `input()` builtin
+    rather than directly using sys.stdin to allow usage within an
     interactive session.
     """
-
-    class __StdIn:
-        """Internal "hidden" implementation for singleton
-        design pattern."""
-
-        def __next__(self):  # Core method
-            try:
-                return input()
-            except EOFError:
-                raise StopIteration
-
-        def __iter__(self):
-            return self
-
-    # Singleton instance:
-    instance = None
-
-    def __new__(cls):
-        if StdIn.instance is None:
-            StdIn.instance = StdIn.__StdIn()
-        return StdIn.instance  # Use singleton
-
-    def __getattribute__(self, item):
-        return StdIn.instance.__getattribute__(item)
+    try:
+        while True:
+            yield input()
+    except EOFError:
+        return
 
 
 files = {"stdin": StdIn()}  # dictionary of open files
