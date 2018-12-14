@@ -9,7 +9,7 @@ class Test:
 
     def test_function(self):
         sys.stdin = io.StringIO("10 20 30")
-        [x, y, z] = read(int, int, int)
+        [x, y, z] = read(int, int, int, file=sys.stdin)
         assert [x, y, z] == [10, 20, 30]
 
     def setup_method(self, method):
