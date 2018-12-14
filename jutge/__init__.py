@@ -18,16 +18,18 @@ class JutgeTokenizer:
     def __init__(self, stream):
         self.stream = stream
         self.typ = str
-        self.words = iter('')
+        self.words_in_line = None
         self.word = None
         self.worditer = None
-        self.wordidx = 0
-        self.wordlen = 0
+        self.wordidx = None
+        self.wordlen = None
+        self.__init_next_line()
+        self.__init_next_word()
 
     def __iter__(self):
         return self
 
-    def __nextline__(self):
+    def __init_next_line(self):
         """Find next non-empty line"""
         for line in self.stream:
             line = line.strip()
@@ -35,45 +37,37 @@ class JutgeTokenizer:
                 return line
         return None
 
-    def __nextword__(self):
+    def __next_word(self):
         """Find next non-empty word"""
-        word = next(self.words, None)
+        word = next(self.words_in_line, None)
         if word is None:
-            line = self.__nextline__()
-            if line is not None:
-                self.words = iter(line.split())
-                word = next(self.words, None)
+            self.__init_next_line()
+            word = next(self.words_in_line)
         return word
 
-    def __initnextword__(self):
+    def __init_next_word(self):
         """Init next word and corresponding variables"""
-        self.word = self.__nextword__()
-        if self.word is not None:
-            self.worditer = iter(self.word)
-            self.wordidx = 0
-            self.wordlen = len(self.word)
+        self.word = self.__next_word()
+        self.worditer = iter(self.word)
+        self.wordidx = 0
+        self.wordlen = len(self.word)
 
     def __next__(self):
         """Find next token using current `self.type`."""
         # get next word if need be
         if self.word is None:
-            self.__initnextword__()
+            self.__init_next_word()
 
-        # return nothing if there's no input
-        if self.word is None:
-            return None
-
-        # otherwise return whatever
+        # return whatever
         if self.typ == chr:
             value = next(self.worditer)
             self.wordidx += 1
-            if self.wordidx == self.wordlen:
+            if self.wordidx == self.wordlen:  # If all chars have been read
                 self.word = None
-            return value
         else:
             value = self.typ(self.word[self.wordidx:])
             self.word = None
-            return value
+        return value
 
     def next(self):
         """For Python2 compatibility purposes."""
