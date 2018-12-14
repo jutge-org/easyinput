@@ -1,4 +1,4 @@
-def extract_kwargs(**kwd_ids_and_defaults):
+def kwd_only(**kwd_ids_and_defaults):
     """For Python 2 compatibility (**kwargs must be used instead of
     keyword-only args). Decorates functions in such a way that only
     some specified kwargs are allowed, and sets their defaults."""

@@ -5,7 +5,7 @@ see https://github.com/jutge-org/jutge-python
 
 import sys
 from future.builtins import int  # for Python2 compatibility
-from jutge.utils import extract_kwargs
+from jutge.utils import kwd_only
 
 __all__ = ['read', 'keep_reading']  # Specify what to import with *
 version = "1.8"  # current version
@@ -98,10 +98,11 @@ def StdIn():
         return
 
 
-files = {'stdin': StdIn()}  # dictionary of open files
+tokenizers = {}  # dictionary of open tokenizer objects
+__StdIn = StdIn()
 
 
-@extract_kwargs(file=files['stdin'], amount=1)  # Python 2 compatibility
+@kwd_only(file=__StdIn, amount=1)  # Python 2 compatibility
 def read(*types, **kwargs):
     """
     Py3 signature: `read(*types, file=files['stdin'], amount: int = 1) -> iter`
@@ -129,7 +130,7 @@ def read(*types, **kwargs):
         return (tokens.nexttoken(typ) for typ in types for _ in range(amount))
 
 
-@extract_kwargs(file=files['stdin'])  # Python 2 compatibility
+@kwd_only(file=__StdIn, amount=1)  # Python 2 compatibility
 def keep_reading(*types, **kwargs):
     """
     Py3 signature: `keep_reading(*types, file=files['stdin']) -> iter`
