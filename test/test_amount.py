@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 import jutge
 
 
-def test1():
+def test_1():
     source = open('./test/text/source3.txt', 'r')
     expected = range(1, 13)
     input_gen = jutge.read(int, file=source, amount=12)

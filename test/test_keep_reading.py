@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 import jutge
 
 
-def test1():
+def test_1():
     source = open('./test/text/source1.txt', 'r')
     expected = (
         'hello', 'world', 'Python', 'rocks!', '32.14', r'\n', r'^D'
@@ -11,12 +11,12 @@ def test1():
     assert all(next(input_gen) == val for val in expected)
 
 
-def test2():
+def test_2():
     source = open('./test/text/source1.txt', 'r')
     assert not tuple(jutge.keep_reading(int, file=source))
 
 
-def test3():
+def test_3():
     source = open('./test/text/source2.txt', 'r')
     expected = (
         2, -3, 8
@@ -25,7 +25,7 @@ def test3():
     assert all(next(input_gen) == val for val in expected)
 
 
-def test4():
+def test_4():
     source = open('./test/text/source2.txt', 'r')
     expected = (
         2, -3, 8, 3.14, 12
