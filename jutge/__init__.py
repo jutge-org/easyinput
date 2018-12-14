@@ -5,7 +5,7 @@ see https://github.com/jutge-org/jutge-python
 
 import sys
 from future.builtins import int  # for Python2 compatibility
-from jutge.utils import kwd_only
+from jutge.utils import kwd_only, identity
 
 __all__ = ['read', 'keep_reading']  # Specify what to import with *
 version = "1.8"  # current version
@@ -103,7 +103,7 @@ def read(*types, **kwargs):
     This is the main function in the module.
     """
     tokens, amount = __unpack(**kwargs)
-    return __read(tokens, amount, *types)
+    return __read(identity, tokens, amount, *types)
 
 
 @kwd_only(file=__StdIn, amount=1)  # Python 2 compatibility
@@ -117,23 +117,23 @@ def keep_reading(*types, **kwargs):
     try:
         tokens, amount = __unpack(**kwargs)
         while True:
-            yield __read(tokens, amount, *types)
+            yield __read(tuple, tokens, amount, *types)
     except ValueError:
         return
     except EOFError:
         return
 
 
-def __read(tokens, amount, *types):
+def __read(func, tokens, amount, *types):
     if len(types) <= 1:
         typ = types[0] if types else str
         if amount == 1:  # Return single value
             return tokens.nexttoken(typ)
         else:  # Return generator of type-homogeneous values
             tokens.typ = typ  # Set fixed type for efficiency
-            return (next(tokens) for _ in range(amount))
+            return func(next(tokens) for _ in range(amount))
     else:  # Return generator of type-heterogenous values
-        return (tokens.nexttoken(typ) for _ in range(amount) for typ in types)
+        return func(tokens.nexttoken(typ) for _ in range(amount) for typ in types)
 
 
 def __unpack(**kwargs):
