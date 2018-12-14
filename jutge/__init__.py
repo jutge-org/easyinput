@@ -120,7 +120,7 @@ def read(*types, **kwargs):
             tokens.typ = typ  # Set fixed type for efficiency
             return (next(tokens) for _ in range(amount))
     else:  # Return generator of type-heterogenous values
-        return (tokens.nexttoken(typ) for typ in types for _ in range(amount))
+        return (tokens.nexttoken(typ) for _ in range(amount) for typ in types )
 
 
 @kwd_only(file=__StdIn, amount=1)  # Python 2 compatibility
