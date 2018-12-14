@@ -1,11 +1,8 @@
 export PYTHONPATH=${CURDIR}
 
-.PHONY: all test coverage flake8 clean
+.PHONY: all coverage flake8 clean
 
-all: test coverage flake8
-
-test:
-	py.test
+all: coverage flake8
 
 coverage:
 	coverage run --source jutge -m py.test

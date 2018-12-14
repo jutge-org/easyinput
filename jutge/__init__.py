@@ -91,10 +91,10 @@ def StdIn():
 
 
 tokenizers = {}  # dictionary of open tokenizer objects
-__StdIn = StdIn()
+_StdIn = StdIn()
 
 
-@kwd_only(file=__StdIn, amount=1)  # Python 2 compatibility
+@kwd_only(file=_StdIn, amount=1)  # Python 2 compatibility
 def read(*types, **kwargs):
     """
     Py3 signature: `read(*types, file=files['stdin'], amount: int = 1) -> iter`
@@ -106,7 +106,7 @@ def read(*types, **kwargs):
     return __read(identity, tokens, amount, *types)
 
 
-@kwd_only(file=__StdIn, amount=1)  # Python 2 compatibility
+@kwd_only(file=_StdIn, amount=1)  # Python 2 compatibility
 def keep_reading(*types, **kwargs):
     """
     Py3 signature: `keep_reading(*types, file=files['stdin']) -> iter`

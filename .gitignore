@@ -6,3 +6,5 @@ dist/
 .coverage
 htmlcov/
 *,cover
+.idea/
+.pytest_cache/
