@@ -102,25 +102,8 @@ def read(*types, **kwargs):
     the types specified by *types.
     This is the main function in the module.
     """
-
-    file, amount = kwargs['file'], kwargs['amount']
-    if not isinstance(amount, int):
-        raise TypeError("Expected integer amount")
-    if not amount > 0:
-        raise ValueError("Expected positive amount")
-    if file not in tokenizers:
-        tokenizers[file] = JutgeTokenizer(file)
-    tokens = tokenizers[file]
-
-    if len(types) <= 1:
-        typ = types[0] if types else str
-        if amount == 1:  # Return single value
-            return tokens.nexttoken(typ)
-        else:  # Return generator of type-homogeneous values
-            tokens.typ = typ  # Set fixed type for efficiency
-            return (next(tokens) for _ in range(amount))
-    else:  # Return generator of type-heterogenous values
-        return (tokens.nexttoken(typ) for _ in range(amount) for typ in types)
+    tokens, amount = __unpack(**kwargs)
+    return __read(tokens, amount, *types)
 
 
 @kwd_only(file=__StdIn, amount=1)  # Python 2 compatibility
@@ -132,12 +115,38 @@ def keep_reading(*types, **kwargs):
     to the specified types.
     """
     try:
+        tokens, amount = __unpack(**kwargs)
         while True:
-            yield read(*types, **kwargs)
+            yield __read(tokens, amount, *types)
     except ValueError:
         return
     except EOFError:
         return
+
+
+def __read(tokens, amount, *types):
+    if len(types) <= 1:
+        typ = types[0] if types else str
+        if amount == 1:  # Return single value
+            return tokens.nexttoken(typ)
+        else:  # Return generator of type-homogeneous values
+            tokens.typ = typ  # Set fixed type for efficiency
+            return (next(tokens) for _ in range(amount))
+    else:  # Return generator of type-heterogenous values
+        return (tokens.nexttoken(typ) for _ in range(amount) for typ in types)
+
+
+def __unpack(**kwargs):
+    file, amount = kwargs['file'], kwargs['amount']
+    if not isinstance(amount, int):
+        raise TypeError("Expected integer amount")
+    if not amount > 0:
+        raise ValueError("Expected positive amount")
+    if file not in tokenizers:
+        tokenizers[file] = JutgeTokenizer(file)
+    tokens = tokenizers[file]
+
+    return tokens, amount
 
 
 sys.setrecursionlimit(1000000)  # hack to get more stack size
