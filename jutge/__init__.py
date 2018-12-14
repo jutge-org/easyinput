@@ -4,7 +4,7 @@ see https://github.com/jutge-org/jutge-python
 """
 
 import sys
-from builtins import int  # for Python2 compatibility
+from future.builtins import int  # for Python2 compatibility
 from jutge.utils import extract_kwargs
 
 __all__ = ['read', 'keep_reading']  # Specify what to import with *
