@@ -34,8 +34,9 @@ class JutgeTokenizer:
         for line in self.stream:
             line = line.strip()
             if line:
-                return line
-        return None
+                self.words_in_line = iter(line.split())
+                return
+        raise EOFError
 
     def __next_word(self):
         """Find next non-empty word"""
@@ -85,11 +86,8 @@ def StdIn():
     rather than directly using sys.stdin to allow usage within an
     interactive session.
     """
-    try:
-        while True:
-            yield input()
-    except EOFError:
-        return
+    while True:
+        yield input()
 
 
 tokenizers = {}  # dictionary of open tokenizer objects
@@ -116,11 +114,12 @@ def read(*types, **kwargs):
 
     if len(types) <= 1:
         typ = types[0] if types else str
-        if amount == 1:
+        if amount == 1:  # Return single value
             return tokens.nexttoken(typ)
-        else:
-            return (tokens.nexttoken(typ) for _ in range(amount))
-    else:
+        else:  # Return generator of type-homogeneous values
+            tokens.typ = typ  # Set fixed type for efficiency
+            return (next(tokens) for _ in range(amount))
+    else:  # Return generator of type-heterogenous values
         return (tokens.nexttoken(typ) for typ in types for _ in range(amount))
 
 
@@ -132,14 +131,12 @@ def keep_reading(*types, **kwargs):
     stream is not empty and the tokens can be converted
     to the specified types.
     """
-
-    file = kwargs['file']
     try:
-        values = read(*types, file=file)
-        while values is not None:
-            yield values
-            values = read(*types, file=file)
+        while True:
+            yield read(*types, **kwargs)
     except ValueError:
+        return
+    except EOFError:
         return
 
 
