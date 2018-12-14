@@ -110,9 +110,9 @@ def read(*types, **kwargs):
         raise TypeError("Expected integer amount")
     if not amount > 0:
         raise ValueError("Expected positive amount")
-    if file not in files:
-        files[file] = JutgeTokenizer(file)
-    tokens = files[file]
+    if file not in tokenizers:
+        tokenizers[file] = JutgeTokenizer(file)
+    tokens = tokenizers[file]
 
     if len(types) <= 1:
         typ = types[0] if types else str
