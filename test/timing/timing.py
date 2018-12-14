@@ -1,6 +1,9 @@
-import jutge
-import jutge_old
 import timeit
+import jutge_old
+import jutge
+import colorama
+from termcolor import colored
+colorama.init()
 
 
 def time_new_1():
@@ -50,15 +53,21 @@ class Job:
 
 if __name__ == '__main__':
     comparisons = (
-        Job("Sum over int", 3, 1000),
-        Job("Read/iterate sequences of int", 2, 500),
-        Job("Read long file", 1, 2)
+        Job("Sum over int", 3, 400),
+        Job("Read/iterate sequences of int", 2, 40),
+        Job("Read long file", 1, 1)
     )
     for comp in comparisons:
         for v in ("new", "old"):
             func = "time_{}_{}".format(v, comp.id)
-            print("[{}] {}... ".format(v.upper(), comp.title), end='')
-            print(timeit.timeit(stmt="{}()".format(func),
-                                setup="from timing import {}".format(func),
-                                number=comp.reps))
-        print()
+            print("[{}] \t{}... ".format(v.upper(), comp.title))
+            t = timeit.Timer(stmt="{}()".format(func),
+                             setup="from timing import {}".format(func))
+            print("\t\tRepeating 5 times...", end='')
+            times = []
+            for i in range(5):
+                times.append(t.timeit(number=comp.reps))
+                print(" {:.4f}".format(times[-1]), end='')
+            print(colored("\n\t\tBEST: {:.4f}".format(min(times)), color='red', attrs=('bold',)))
+
+        print('\n')
