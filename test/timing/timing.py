@@ -52,7 +52,7 @@ if __name__ == '__main__':
     comparisons = (
         Job("Sum over int", 3, 1000),
         Job("Read/iterate sequences of int", 2, 500),
-        Job("Read long file", 1, 1)
+        Job("Read long file", 1, 2)
     )
     for comp in comparisons:
         for v in ("new", "old"):
