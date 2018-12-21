@@ -15,6 +15,10 @@ class JutgeTokenizer:
     """Iterator class for parsing and converting tokens
     from a stream."""
 
+    class InputTypeError(TypeError):
+        """Custom exception for invalid literals for given type"""
+        pass
+
     def __init__(self, stream):
         self.stream = stream
         self.typ = str
@@ -66,8 +70,11 @@ class JutgeTokenizer:
             if self.wordidx == self.wordlen:  # If all chars have been read
                 self.word = None
         else:
-            value = self.typ(self.word[self.wordidx:])
-            self.word = None
+            try:
+                value = self.typ(self.word[self.wordidx:])
+                self.word = None
+            except ValueError:
+                raise JutgeTokenizer.InputTypeError
         return value
 
     def next(self):
@@ -118,7 +125,7 @@ def keep_reading(*types, **kwargs):
         tokens, amount = __unpack(**kwargs)
         while True:
             yield __read(tuple, tokens, amount, *types)
-    except ValueError:
+    except JutgeTokenizer.InputTypeError:
         return
     except EOFError:
         return
