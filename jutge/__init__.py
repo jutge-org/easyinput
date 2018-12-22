@@ -138,7 +138,7 @@ def keep_reading(*types, **kwargs):
         tokens, amount, astuple = __unpack_and_check(**kwargs)
         method, args = __select_method(tokens, types, amount, astuple)
         while True:
-            yield tuple(method(*args)) if astuple else method(*args)
+            yield method(*args)
     except JutgeTokenizer.InputTypeError:
         return
     except EOFError:
