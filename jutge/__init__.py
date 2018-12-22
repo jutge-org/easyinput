@@ -21,17 +21,11 @@ class JutgeTokenizer:
 
     def __init__(self, stream):
         self.stream = stream
-        self.typ = str
-        self.words_in_line = None
+        self.words_in_line = iter("")
         self.word = None
         self.worditer = None
         self.wordidx = None
         self.wordlen = None
-        self.__init_next_line()
-        self.__init_next_word()
-
-    def __iter__(self):
-        return self
 
     def __init_next_line(self):
         """Find next non-empty line"""
@@ -42,7 +36,7 @@ class JutgeTokenizer:
                 return
         raise EOFError
 
-    def __next_word(self):
+    def __get_next_word(self):
         """Find next non-empty word"""
         word = next(self.words_in_line, None)
         if word is None:
@@ -52,45 +46,35 @@ class JutgeTokenizer:
 
     def __init_next_word(self):
         """Init next word and corresponding variables"""
-        self.word = self.__next_word()
+        self.word = self.__get_next_word()
         self.worditer = iter(self.word)
         self.wordidx = 0
         self.wordlen = len(self.word)
 
-    def __next__(self):
-        """Find next token using current `self.type`."""
+    def nexttoken(self, typ=str):
+        """Get next token as the specified type."""
         # get next word if need be
         if self.word is None:
             self.__init_next_word()
 
         # return whatever
-        if self.typ == chr:
+        if typ == chr:
             value = next(self.worditer)
             self.wordidx += 1
             if self.wordidx == self.wordlen:  # If all chars have been read
                 self.word = None
         else:
             try:
-                value = self.typ(self.word[self.wordidx:])
+                value = typ(self.word[self.wordidx:])
                 self.word = None
             except ValueError:
                 raise JutgeTokenizer.InputTypeError
         return value
 
-    def next(self):
-        """For Python2 compatibility purposes."""
-        return self.__next__()
-
-    def nexttoken(self, typ=str):
-        """Get next token as the specified type."""
-        self.typ = typ
-        return self.__next__()
-
     def read_homogenous(self, amount, typ=str):
         """Return generator of type-homogeneous values"""
-        self.typ = typ  # Set fixed type for efficiency
         for _ in range(amount):
-            yield self.__next__()
+            yield self.nexttoken(typ)
 
     def read_heterogenous(self, amount, *types):
         """Return generator of type-heterogenous values"""
@@ -116,7 +100,8 @@ _StdIn = StdIn()
 @kwd_only(file=_StdIn, amount=1, astuple=False)  # Python 2 compatibility
 def read(*types, **kwargs):
     """
-    Py3 signature: `read(*types, file=files['stdin'], amount: int = 1) -> iter`
+    Py3 signature:
+        `read(*types, file:iter=_StdIn, amount:int=1, astuple:bool=False)`
     This function returns one or more tokens converted to
     the types specified by *types.
     This is the main function in the module.
@@ -129,7 +114,8 @@ def read(*types, **kwargs):
 @kwd_only(file=_StdIn, amount=1, astuple=False)  # Python 2 compatibility
 def keep_reading(*types, **kwargs):
     """
-    Py3 signature: `keep_reading(*types, file=files['stdin']) -> iter`
+    Py3 signature:
+        `keep_reading(*types, file:iter=_StdIn, amount:int=1, astuple:bool=False)`
     Generator that yields converted tokens while the
     stream is not empty and the tokens can be converted
     to the specified types.
