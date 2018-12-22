@@ -36,17 +36,13 @@ class JutgeTokenizer:
                 return
         raise EOFError
 
-    def __get_next_word(self):
-        """Find next non-empty word"""
+    def __init_next_word(self):
+        """Get next non-empty word and  init corresponding variables"""
         word = next(self.words_in_line, None)
         if word is None:
             self.__init_next_line()
             word = next(self.words_in_line)
-        return word
-
-    def __init_next_word(self):
-        """Init next word and corresponding variables"""
-        self.word = self.__get_next_word()
+        self.word = word
         self.worditer = iter(self.word)
         self.wordidx = 0
         self.wordlen = len(self.word)
@@ -71,12 +67,12 @@ class JutgeTokenizer:
                 raise JutgeTokenizer.InputTypeError
         return value
 
-    def read_homogenous(self, amount, typ=str):
+    def gen_homo(self, amount, typ=str):
         """Return generator of type-homogeneous values"""
         for _ in range(amount):
             yield self.nexttoken(typ)
 
-    def read_heterogenous(self, amount, *types):
+    def gen_hetero(self, amount, *types):
         """Return generator of type-heterogenous values"""
         for _ in range(amount):
             for typ in types:
@@ -149,9 +145,9 @@ def __select_method(tokens, types, amount, astuple):
         if amount == 1:
             method, args = tokens.nexttoken, types
         else:
-            method, args = tokens.read_homogenous, (amount,) + types
+            method, args = tokens.gen_homo, (amount,) + types
     else:
-        method, args = tokens.read_heterogenous, (amount,) + types
+        method, args = tokens.gen_hetero, (amount,) + types
 
     return (lambda *x: tuple(method(*x))) if astuple else method, args
 
