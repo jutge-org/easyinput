@@ -89,11 +89,14 @@ class JutgeTokenizer:
     def read_homogenous(self, amount, typ=str):
         """Return generator of type-homogeneous values"""
         self.typ = typ  # Set fixed type for efficiency
-        return (self.__next__() for _ in range(amount))
+        for _ in range(amount):
+            yield self.__next__()
 
     def read_heterogenous(self, amount, *types):
         """Return generator of type-heterogenous values"""
-        return (self.nexttoken(typ) for _ in range(amount) for typ in types)
+        for _ in range(amount):
+            for typ in types:
+                yield self.nexttoken(typ)
 
 
 def StdIn():
