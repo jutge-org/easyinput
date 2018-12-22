@@ -1,8 +1,11 @@
 import timeit
-import jutge_old
-import jutge
+
 import colorama
 from termcolor import colored
+
+import jutge
+import jutge_old
+
 colorama.init()
 
 
@@ -21,8 +24,8 @@ def time_old_1():
 def time_new_2():
     with open('../text/source5.txt', 'r') as file:
         nums = []
-        for line in jutge.keep_reading(int, file=file, amount=100):
-            nums.append(tuple(line))
+        for line in jutge.keep_reading(int, file=file, amount=100, astuple=True):
+            nums.append(line)
 
 
 def time_old_2():
@@ -51,6 +54,8 @@ class Job:
         self.reps = reps
 
 
+repeats = 10  # (constant) Number of repetitions per job
+
 if __name__ == '__main__':
     comparisons = (
         Job("Sum over int", 3, 400),
@@ -58,14 +63,14 @@ if __name__ == '__main__':
         Job("Read long file", 1, 1)
     )
     for comp in comparisons:
-        for v in ("new", "old"):
+        for v in "old", "new":
             func = "time_{}_{}".format(v, comp.id)
             print("[{}] \t{}... ".format(v.upper(), comp.title))
             t = timeit.Timer(stmt="{}()".format(func),
                              setup="from timing import {}".format(func))
-            print("\t\tRepeating 5 times...", end='')
+            print("\t\tRepeating {} times...".format(repeats), end='')
             times = []
-            for i in range(5):
+            for i in range(repeats):
                 times.append(t.timeit(number=comp.reps))
                 print(" {:.4f}".format(times[-1]), end='')
             print(colored("\n\t\tBEST: {:.4f}".format(min(times)), color='red', attrs=('bold',)))
