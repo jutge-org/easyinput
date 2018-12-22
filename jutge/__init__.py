@@ -5,7 +5,7 @@ see https://github.com/jutge-org/jutge-python
 
 import sys
 from future.builtins import int, input  # for Python2 compatibility
-from jutge.utils import kwd_only, identity
+from jutge.utils import kwd_only
 
 __all__ = ['read', 'keep_reading']  # Specify what to import with *
 version = "1.8"  # current version
@@ -84,7 +84,16 @@ class JutgeTokenizer:
     def nexttoken(self, typ=str):
         """Get next token as the specified type."""
         self.typ = typ
-        return next(self)
+        return self.__next__()
+
+    def read_homogenous(self, amount, typ=str):
+        """Return generator of type-homogeneous values"""
+        self.typ = typ  # Set fixed type for efficiency
+        return (self.__next__() for _ in range(amount))
+
+    def read_heterogenous(self, amount, *types):
+        """Return generator of type-heterogenous values"""
+        return (self.nexttoken(typ) for _ in range(amount) for typ in types)
 
 
 def StdIn():
@@ -101,7 +110,7 @@ tokenizers = {}  # dictionary of open tokenizer objects
 _StdIn = StdIn()
 
 
-@kwd_only(file=_StdIn, amount=1)  # Python 2 compatibility
+@kwd_only(file=_StdIn, amount=1, astuple=False)  # Python 2 compatibility
 def read(*types, **kwargs):
     """
     Py3 signature: `read(*types, file=files['stdin'], amount: int = 1) -> iter`
@@ -109,11 +118,12 @@ def read(*types, **kwargs):
     the types specified by *types.
     This is the main function in the module.
     """
-    tokens, amount = __unpack(**kwargs)
-    return __read(identity, tokens, amount, *types)
+    tokens, amount, astuple = __unpack_and_check(**kwargs)
+    method, args = __select_method(tokens, types, amount, astuple)
+    return method(*args)
 
 
-@kwd_only(file=_StdIn, amount=1)  # Python 2 compatibility
+@kwd_only(file=_StdIn, amount=1, astuple=False)  # Python 2 compatibility
 def keep_reading(*types, **kwargs):
     """
     Py3 signature: `keep_reading(*types, file=files['stdin']) -> iter`
@@ -122,29 +132,18 @@ def keep_reading(*types, **kwargs):
     to the specified types.
     """
     try:
-        tokens, amount = __unpack(**kwargs)
+        tokens, amount, astuple = __unpack_and_check(**kwargs)
+        method, args = __select_method(tokens, types, amount, astuple)
         while True:
-            yield __read(tuple, tokens, amount, *types)
+            yield tuple(method(*args)) if astuple else method(*args)
     except JutgeTokenizer.InputTypeError:
         return
     except EOFError:
         return
 
 
-def __read(func, tokens, amount, *types):
-    if len(types) <= 1:
-        typ = types[0] if types else str
-        if amount == 1:  # Return single value
-            return tokens.nexttoken(typ)
-        else:  # Return generator of type-homogeneous values
-            tokens.typ = typ  # Set fixed type for efficiency
-            return func(next(tokens) for _ in range(amount))
-    else:  # Return generator of type-heterogenous values
-        return func(tokens.nexttoken(typ) for _ in range(amount) for typ in types)
-
-
-def __unpack(**kwargs):
-    file, amount = kwargs['file'], kwargs['amount']
+def __unpack_and_check(**kwargs):
+    file, amount, astuple = kwargs['file'], kwargs['amount'], kwargs['astuple']
     if not isinstance(amount, int):
         raise TypeError("Expected integer amount")
     if not amount > 0:
@@ -153,7 +152,19 @@ def __unpack(**kwargs):
         tokenizers[file] = JutgeTokenizer(file)
     tokens = tokenizers[file]
 
-    return tokens, amount
+    return tokens, amount, astuple
+
+
+def __select_method(tokens, types, amount, astuple):
+    if len(types) <= 1:
+        if amount == 1:
+            method, args = tokens.nexttoken, types
+        else:
+            method, args = tokens.read_homogenous, (amount,) + types
+    else:
+        method, args = tokens.read_heterogenous, (amount,) + types
+
+    return (lambda *x: tuple(method(*x))) if astuple else method, args
 
 
 sys.setrecursionlimit(1000000)  # hack to get more stack size

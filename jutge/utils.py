@@ -17,7 +17,3 @@ def kwd_only(**kwd_ids_and_defaults):
         return decorated
 
     return decorator
-
-
-def identity(x):
-    return x
