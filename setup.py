@@ -11,8 +11,8 @@ setup(
     author='Jordi Petit',
     author_email='jpetit@cs.upc.edu',
     url='https://github.com/jutge-org/jutge-python',
-    download_url='https://github.com/jutge-org/jutge-python/tarball/%s' % jutge.version,
-    keywords=['jutge', 'jutge.org', 'education'],
+    download_url='https://github.com/jutge-org/jutge-python/tarball/{}'.format(jutge.version),
+    keywords=['jutge', 'jutge.org', 'education', 'input'],
     license='Apache',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -29,6 +29,8 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Topic :: Education',
     ],
+    test_suite=['pytest-runner'],
+    tests_require=['pytest']
 )
 
 

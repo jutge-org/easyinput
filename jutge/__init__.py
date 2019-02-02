@@ -8,7 +8,7 @@ from future.builtins import int, input  # for Python2 compatibility
 from jutge.utils import kwd_only
 
 __all__ = ['read', 'keep_reading']  # Specify what to import with *
-version = "1.8"  # current version
+version = "2.0"  # current version
 
 
 class JutgeTokenizer:
