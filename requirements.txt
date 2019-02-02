@@ -1,1 +1,5 @@
-future >=0.17
+pytest
+coverage
+coveralls
+flake8
+future
