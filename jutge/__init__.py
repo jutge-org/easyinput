@@ -3,19 +3,39 @@ jutge package for alternative input handling.
 see https://github.com/jutge-org/jutge-python
 """
 
+import enum
 import sys
+
 from future.builtins import int, input  # for Python2 compatibility
+
 from jutge.utils import kwd_only
 
-__all__ = ['read', 'keep_reading']  # Specify what to import with *
+__all__ = ['read', 'keep_reading', 'set_eof_handling']  # Specify what to import with *
 version = "2.0"  # current version
 
 
-class JutgeTokenizer:
+class EOFModes(enum.Enum):
+    """Enum of handling modes for end-of-input"""
+    ReturnNone = 0
+    RaiseException = 1
+
+
+_EOFMode = EOFModes.ReturnNone  # default handling mode
+
+
+def set_eof_handling(mode):
+    """EOF mode frontend setter"""
+    global _EOFMode
+    if not isinstance(mode, EOFModes):
+        raise TypeError("Invalid EOF mode specifier")
+    _EOFMode = mode
+
+
+class JutgeTokenizer(object):
     """Iterator class for parsing and converting tokens
     from a stream."""
 
-    class InputTypeError(TypeError):
+    class InputTypeError(ValueError):
         """Custom exception for invalid literals for given type"""
         pass
 
@@ -51,7 +71,7 @@ class JutgeTokenizer:
             self.__init_next_line()
             word = next(self.words_in_line)
         self.word = word
-        self.worditer = iter(self.word)
+        self.worditer = iter(self._word)
         self.wordidx = 0
         self.wordlen = len(self.word)
 
@@ -59,7 +79,13 @@ class JutgeTokenizer:
         """Get next token as the specified type."""
         # get next word if need be
         if self.word is None:
-            self.__init_next_word()
+            try:
+                self.__init_next_word()
+            except EOFError:
+                if _EOFMode is EOFModes.RaiseException:
+                    raise EOFError("Tried to read when end of input was reached")
+                elif _EOFMode is EOFModes.ReturnNone:
+                    return None
 
         # return whatever
         if typ == chr:
@@ -69,10 +95,10 @@ class JutgeTokenizer:
                 self.word = None
         else:
             try:
-                value = typ(self.word[self.wordidx:])
+                value = typ(self.word)
                 self.word = None
             except ValueError:
-                raise JutgeTokenizer.InputTypeError
+                raise JutgeTokenizer.InputTypeError("Unable to parse '{}' as {}".format(self.word, typ))
         return value
 
     def multiple_tokens(self, amount, type1=str, *types):
@@ -120,6 +146,8 @@ def keep_reading(*types, **kwargs):
     stream is not empty and the tokens can be converted
     to the specified types.
     """
+    previous_eof_mode = _EOFMode
+    set_eof_handling(EOFModes.RaiseException)
     try:
         tokens, amount, astuple = __unpack_and_check(**kwargs)
         method, args = __select_method(tokens, types, amount, astuple)
@@ -129,6 +157,8 @@ def keep_reading(*types, **kwargs):
         return
     except EOFError:
         return
+    finally:
+        set_eof_handling(previous_eof_mode)
 
 
 def __unpack_and_check(**kwargs):
