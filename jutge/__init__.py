@@ -67,14 +67,10 @@ class JutgeTokenizer:
                 raise JutgeTokenizer.InputTypeError
         return value
 
-    def gen_homo(self, amount, typ=str):
-        """Return generator of type-homogeneous values"""
-        for _ in range(amount):
-            yield self.nexttoken(typ)
-
-    def gen_hetero(self, amount, *types):
+    def multiple_tokens(self, amount, type1=str, *types):
         """Return generator of type-heterogenous values"""
         for _ in range(amount):
+            yield self.nexttoken(type1)
             for typ in types:
                 yield self.nexttoken(typ)
 
@@ -141,13 +137,15 @@ def __unpack_and_check(**kwargs):
 
 
 def __select_method(tokens, types, amount, astuple):
-    if len(types) <= 1:
-        if amount == 1:
-            method, args = tokens.nexttoken, types
-        else:
-            method, args = tokens.gen_homo, (amount,) + types
+    """
+    Intended for internal use only. Helper function for `read` and `keep_reading`.
+    Selects the specific method to be used based on type/token amount.
+    """
+
+    if len(types) <= 1 and amount <= 1:
+        method, args = tokens.nexttoken, types
     else:
-        method, args = tokens.gen_hetero, (amount,) + types
+        method, args = tokens.multiple_tokens, (amount,) + types
 
     return (lambda *x: tuple(method(*x))) if astuple else method, args
 
