@@ -5,6 +5,10 @@ dist/
 *~
 .coverage
 htmlcov/
-*,cover
+*.cover
 .idea/
 .pytest_cache/
+venv2/
+venv3/
+/test/text/long.txt
+/test/timing/
