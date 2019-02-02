@@ -3,4 +3,4 @@ import jutge
 
 
 def test_version():
-    assert jutge.version == "1.8"
+    assert jutge.version == "2.0"
