@@ -24,8 +24,16 @@ class JutgeTokenizer:
         self.words_in_line = iter("")
         self.word = None
         self.worditer = None
-        self.wordidx = None
-        self.wordlen = None
+        self.wordidx = 0
+        self.wordlen = 0
+
+    @property
+    def word(self):
+        return self._word[self.wordidx:] if self._word else None
+
+    @word.setter
+    def word(self, value):
+        self._word = value
 
     def __init_next_line(self):
         """Find next non-empty line"""
@@ -124,11 +132,16 @@ def keep_reading(*types, **kwargs):
 
 
 def __unpack_and_check(**kwargs):
+    """
+    Intended for internal use only. Helper function for `read` and `keep_reading`.
+    Gets relevant kwrags and does whatever type/value checking needs to be made.
+    """
+
     file, amount, astuple = kwargs['file'], kwargs['amount'], kwargs['astuple']
     if not isinstance(amount, int):
         raise TypeError("Expected integer amount")
-    if not amount > 0:
-        raise ValueError("Expected positive amount")
+    if not amount >= 0:
+        raise ValueError("Expected nonnegative amount")
     if file not in tokenizers:
         tokenizers[file] = JutgeTokenizer(file)
     tokens = tokenizers[file]
