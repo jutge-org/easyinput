@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 import jutge
 
@@ -32,7 +32,7 @@ setup(
         'Topic :: Education',
     ],
 
-    test_suite=['pytest-runner'],
+    test_suite='pytest-runner',
     tests_require=['pytest']
 )
 
