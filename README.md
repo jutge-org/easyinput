@@ -94,7 +94,8 @@ print(max(x, y))
 ----
 
 In the event no more tokens are available,
-`read` returns `None`, as default behaviour&mdash;see below for more information. 
+`read` returns `None`, as default behaviour&mdash;see 
+[_EOF handling modes_](#eof-handling-modes) for more details. 
 
 -----
 
@@ -278,9 +279,8 @@ Both `read` and `read_while` support specifying more than one type,
 as in `read(int, chr)`. 
 
 In `read`'s case, this usage returns
-an iterable sequence&mdash;see below for more details&mdash;
-of tokens, 
-one for each type requested, respecting their order. 
+an iterable sequence&mdash;see [here](#as-list) for more details&mdash;of 
+tokens, one for each type requested, respecting their order. 
 For example, `read(int, chr, int)` will return a
 sequence containing an `int`, a `chr`, and an `int`, *in that order*.
 
@@ -354,7 +354,7 @@ of tokens, as in `read(int, amount=1000)`.
 It is compatible with heterogeneous types. I.e., 
 `read(str, int, amount=2)` is equivalent to `read(str, int, str, int)`.
 
-### `as_list`
+### `as_list` <a name="as-list"></a>
 
 By default, when `read` is [called with multiple types](#multiple-tokens),
 it returns a `list` with the requested tokens. If, for some reason, you
