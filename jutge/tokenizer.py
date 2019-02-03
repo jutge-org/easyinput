@@ -35,13 +35,14 @@ class JutgeTokenizer(object):
         self.stream = stream
         self.words_in_line = iter("")
         self.word = None
-        self.worditer = None
         self.wordidx = 0
         self.wordlen = 0
 
     @property
     def word(self):
-        return self._word[self.wordidx:] if self._word else None
+        if self._word is None or self.wordidx == self.wordlen:
+            return None
+        return self._word[self.wordidx:]
 
     @word.setter
     def word(self, value):
@@ -81,10 +82,8 @@ class JutgeTokenizer(object):
 
         # return whatever
         if typ == chr:
-            value = next(self.worditer)
+            value = self.word[0]
             self.wordidx += 1
-            if self.wordidx == self.wordlen:  # If all chars have been read
-                self.word = None
         else:
             try:
                 value = typ(self.word)
