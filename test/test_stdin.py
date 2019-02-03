@@ -12,7 +12,7 @@ class Test:
 
     def test_2(self):
         sys.stdin = io.StringIO("a line\n next line")
-        gen = jutge._StdIn
+        gen = jutge.StdIn()
         assert next(gen) == "a line"
 
     def setup_method(self, method):

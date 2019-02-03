@@ -1,4 +1,4 @@
-pytest
+pytest =4.2.0
 coverage
 coveralls
 flake8
