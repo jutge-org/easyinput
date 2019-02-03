@@ -33,21 +33,21 @@ class JutgeTokenizer(object):
 
     def __init__(self, stream):
         self.stream = stream
-        self.words_in_line = iter("")
-        self.word = None
-        self.wordidx = 0
-        self.wordlen = 0
+        self.words_in_line = []
+        self._wordidx = 0
+        self._word = ''
+        self._charidx = 0
 
     @property
     def word(self):
         """Gets current word"""
-        if self._word is None or self.wordidx == self.wordlen:
-            return None
-        return self._word[self.wordidx:]
-
-    @word.setter
-    def word(self, value):
-        self._word = value
+        if self._charidx >= len(self._word):
+            self._wordidx += 1
+            self._charidx = 0
+        if self._wordidx >= len(self.words_in_line):
+            self._init_next_line()
+        self._word = self.words_in_line[self._wordidx]
+        return self._word
 
     def get_line(self):
         """Returns next non-empty line in stream"""
@@ -58,33 +58,21 @@ class JutgeTokenizer(object):
         raise EOFError
 
     def _init_next_line(self):
-        """Initialize line iterator for next line"""
-        self.words_in_line = iter(self.get_line().split())
-
-    def _init_next_word(self):
-        """Get next non-empty word and  init corresponding variables"""
-        word = next(self.words_in_line, None)
-        if word is None:
-            self._init_next_line()
-            word = next(self.words_in_line)
-        self.word = word
-        self.wordidx = 0
-        self.wordlen = len(word)
+        """Initialize next line and associated variables"""
+        self.words_in_line = self.get_line().split()
+        self._wordidx = 0
 
     def nexttoken(self, typ=str):
         """Get next token as the specified type."""
         try:
-            # get next word if need be
-            if self.word is None:
-                self._init_next_word()
-
             # return whatever
             if typ == chr:
-                value = self.word[0]
-                self.wordidx += 1
+                value = self.word[self._charidx]
+                self._charidx += 1
             else:
-                value = typ(self.word)
-                self.word = None
+                value = typ(self.word[self._charidx:])
+                self._wordidx += 1
+                self._charidx = 0
             return value
 
         except EOFError:
@@ -107,17 +95,17 @@ _tokenizers = {}  # dictionary of open tokenizer objects
 _StdIn = StdIn()
 
 
-@kwd_only(file=_StdIn, amount=1, astuple=True)  # Python 2 compatibility
+@kwd_only(file=_StdIn, amount=1, as_list=True)  # Python 2 compatibility
 def read(*types, **kwargs):
     """
     Py3 signature:
-        `read(*types, file:iter=_StdIn, amount:int=1, astuple:bool=False)`
+        `read(*types, file:iter=_StdIn, amount:int=1, as_list:bool=True)`
     This function returns one or more tokens converted to
     the types specified by *types.
     This is the main function in the module.
     """
-    tokens, amount, astuple = __unpack_and_check(**kwargs)
-    method, args = __select_method(tokens, types, amount, astuple)
+    tokens, amount, as_list = __unpack_and_check(**kwargs)
+    method, args = __select_method(tokens, types, amount, as_list)
     return method(*args)
 
 
@@ -125,7 +113,7 @@ def read(*types, **kwargs):
 def read_while(*types, **kwargs):
     """
     Py3 signature:
-        `read_while(*types, file:iter=_StdIn, amount:int=1, astuple:bool=False)`
+        `read_while(*types, file:iter=_StdIn, amount:int=1)`
     Generator that yields converted tokens while the
     stream is not empty and the tokens can be converted
     to the specified types.
@@ -159,7 +147,7 @@ def __unpack_and_check(**kwargs):
 
     file = kwargs.get('file', None)
     amount = kwargs.get('amount', None)
-    astuple = kwargs.get('astuple', None)
+    as_list = kwargs.get('as_list', None)
     if amount is not None:
         if not isinstance(amount, int):
             raise TypeError("Expected integer amount")
@@ -169,21 +157,21 @@ def __unpack_and_check(**kwargs):
         _tokenizers[file] = JutgeTokenizer(file)
     tokens = _tokenizers[file]
 
-    return tokens, amount, astuple
+    return tokens, amount, as_list
 
 
-def __select_method(tokens, types, amount, astuple):
+def __select_method(tokens, types, amount, as_list):
     """
     Intended for internal use only. Helper function for `read` and `read_while`.
     Selects the specific method to be used based on type/token amount.
     """
 
     if len(types) <= 1 and amount <= 1:
-        method, args, astuple = tokens.nexttoken, types, False
+        method, args, as_list = tokens.nexttoken, types, False
     else:
         method, args = tokens.multiple_tokens, (amount,) + types
 
-    return (lambda *x: tuple(method(*x))) if astuple else method, args
+    return (lambda *x: list(method(*x))) if as_list else method, args
 
 
 sys.setrecursionlimit(1000000)  # hack to get more stack size
