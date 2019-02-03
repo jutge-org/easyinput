@@ -10,7 +10,9 @@ coverage:
 
 # we ignore the "E501 line too long" diagnostics
 flake8:
-	flake8  --ignore=E501 --exclude test/timing/
+	cd jutge
+	flake8  --ignore=E501,F403
+	cd ..
 
 clean:
 	rm -rf .cache MANIFEST dist .coverage htmlcov */*,cover */__pycache__ *~ */*~ */*.pyc
