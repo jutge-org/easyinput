@@ -49,20 +49,23 @@ class JutgeTokenizer(object):
     def word(self, value):
         self._word = value
 
-    def __init_next_line(self):
-        """Find next non-empty line"""
+    def get_line(self):
+        """Returns next non-empty line in stream"""
         for line in self.stream:
             line = line.strip()
             if line:
-                self.words_in_line = iter(line.split())
-                return
+                return line
         raise EOFError
 
-    def __init_next_word(self):
+    def _init_next_line(self):
+        """Initialize line iterator for next line"""
+        self.words_in_line = iter(self.get_line().split())
+
+    def _init_next_word(self):
         """Get next non-empty word and  init corresponding variables"""
         word = next(self.words_in_line, None)
         if word is None:
-            self.__init_next_line()
+            self._init_next_line()
             word = next(self.words_in_line)
         self.word = word
         self.wordidx = 0
@@ -93,7 +96,7 @@ class JutgeTokenizer(object):
             raise JutgeTokenizer.InputTypeError("Unable to parse '{}' as {}".format(self.word, typ))
 
     def multiple_tokens(self, amount, type1=str, *types):
-        """Return generator of type-heterogenous values"""
+        """Returns generator of tokens as specified types"""
         for _ in range(amount):
             yield self.nexttoken(type1)
             for typ in types:
@@ -142,17 +145,26 @@ def read_while(*types, **kwargs):
         set_eof_handling(previous_eof_mode)
 
 
+@kwd_only(file=_StdIn)
+def get_line(**kwargs):
+    tokens, _, _ = __unpack_and_check(**kwargs)
+    return tokens.get_line()
+
+
 def __unpack_and_check(**kwargs):
     """
     Intended for internal use only. Helper function for `read` and `read_while`.
     Gets relevant kwrags and does whatever type/value checking needs to be made.
     """
 
-    file, amount, astuple = kwargs['file'], kwargs['amount'], kwargs['astuple']
-    if not isinstance(amount, int):
-        raise TypeError("Expected integer amount")
-    if not amount >= 0:
-        raise ValueError("Expected nonnegative amount")
+    file = kwargs.get('file', None)
+    amount = kwargs.get('amount', None)
+    astuple = kwargs.get('astuple', None)
+    if amount is not None:
+        if not isinstance(amount, int):
+            raise TypeError("Expected integer amount")
+        if not amount >= 0:
+            raise ValueError("Expected non-negative amount")
     if file not in _tokenizers:
         _tokenizers[file] = JutgeTokenizer(file)
     tokens = _tokenizers[file]
