@@ -6,8 +6,8 @@ import io
 def test_1():
     source = open('test/text/source3.txt')
     expected = range(1, 13)
-    input_gen = jutge.read(int, file=source, amount=12)
-    assert all(next(input_gen) == val for val in expected)
+    nums = jutge.read(int, file=source, amount=12)
+    assert all(inp == val for inp, val in zip(nums, expected))
 
 
 def test_2():
@@ -31,5 +31,5 @@ def test_3():
 def test_4():
     source = io.StringIO("a2 c3")
     expected = ('a', 2, 'c', 3)
-    input_gen = jutge.read(chr, int, amount=2, file=source)
-    assert all(next(input_gen) == val for val in expected)
+    tokens = jutge.read(chr, int, amount=2, file=source)
+    assert all(inp == val for inp, val in zip(tokens, expected))

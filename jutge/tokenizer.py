@@ -107,7 +107,7 @@ _tokenizers = {}  # dictionary of open tokenizer objects
 _StdIn = StdIn()
 
 
-@kwd_only(file=_StdIn, amount=1, astuple=False)  # Python 2 compatibility
+@kwd_only(file=_StdIn, amount=1, astuple=True)  # Python 2 compatibility
 def read(*types, **kwargs):
     """
     Py3 signature:
@@ -121,7 +121,7 @@ def read(*types, **kwargs):
     return method(*args)
 
 
-@kwd_only(file=_StdIn, amount=1, astuple=False)  # Python 2 compatibility
+@kwd_only(file=_StdIn, amount=1)  # Python 2 compatibility
 def read_while(*types, **kwargs):
     """
     Py3 signature:
@@ -133,8 +133,8 @@ def read_while(*types, **kwargs):
     previous_eof_mode = _EOFMode
     set_eof_handling(EOFModes.RaiseException)
     try:
-        tokens, amount, astuple = __unpack_and_check(**kwargs)
-        method, args = __select_method(tokens, types, amount, astuple)
+        tokens, amount, _ = __unpack_and_check(**kwargs)
+        method, args = __select_method(tokens, types, amount, True)
         while True:
             yield method(*args)
     except JutgeTokenizer.InputTypeError:
@@ -179,7 +179,7 @@ def __select_method(tokens, types, amount, astuple):
     """
 
     if len(types) <= 1 and amount <= 1:
-        method, args = tokens.nexttoken, types
+        method, args, astuple = tokens.nexttoken, types, False
     else:
         method, args = tokens.multiple_tokens, (amount,) + types
 
