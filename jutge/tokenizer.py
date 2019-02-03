@@ -120,10 +120,10 @@ def read(*types, **kwargs):
 
 
 @kwd_only(file=_StdIn, amount=1, astuple=False)  # Python 2 compatibility
-def keep_reading(*types, **kwargs):
+def read_while(*types, **kwargs):
     """
     Py3 signature:
-        `keep_reading(*types, file:iter=_StdIn, amount:int=1, astuple:bool=False)`
+        `read_while(*types, file:iter=_StdIn, amount:int=1, astuple:bool=False)`
     Generator that yields converted tokens while the
     stream is not empty and the tokens can be converted
     to the specified types.
@@ -145,7 +145,7 @@ def keep_reading(*types, **kwargs):
 
 def __unpack_and_check(**kwargs):
     """
-    Intended for internal use only. Helper function for `read` and `keep_reading`.
+    Intended for internal use only. Helper function for `read` and `read_while`.
     Gets relevant kwrags and does whatever type/value checking needs to be made.
     """
 
@@ -163,7 +163,7 @@ def __unpack_and_check(**kwargs):
 
 def __select_method(tokens, types, amount, astuple):
     """
-    Intended for internal use only. Helper function for `read` and `keep_reading`.
+    Intended for internal use only. Helper function for `read` and `read_while`.
     Selects the specific method to be used based on type/token amount.
     """
 

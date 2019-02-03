@@ -5,7 +5,7 @@ import jutge
 
 def count_As(data):
     stream = io.StringIO(data)
-    return sum(x == 'a' for x in (jutge.keep_reading(chr, file=stream)))
+    return sum(x == 'a' for x in (jutge.read_while(chr, file=stream)))
 
 
 def test_1():

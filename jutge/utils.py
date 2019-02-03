@@ -1,3 +1,5 @@
+"""Miscellaneous utilities for the main module"""
+
 from future.builtins import input
 
 
