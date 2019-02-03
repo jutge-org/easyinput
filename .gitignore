@@ -8,7 +8,7 @@ htmlcov/
 *.cover
 .idea/
 .pytest_cache/
-venv2/
-venv3/
 /test/text/long.txt
 /test/timing/
+/build/
+/jutge.egg-info/

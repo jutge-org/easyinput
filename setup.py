@@ -8,7 +8,7 @@ setup(
     packages=['jutge'],
     install_requires=['future >=0.17'],
     version=jutge.version,
-    description='Simple functions to read input from Python for problems in Jutge.org.',
+    description='Simple interface to read input from files, stdin, and other streams',
 
     author='Jordi Petit',
     author_email='jpetit@cs.upc.edu',
