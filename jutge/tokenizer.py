@@ -70,27 +70,27 @@ class JutgeTokenizer(object):
 
     def nexttoken(self, typ=str):
         """Get next token as the specified type."""
-        # get next word if need be
-        if self.word is None:
-            try:
-                self.__init_next_word()
-            except EOFError:
-                if _EOFMode is EOFModes.RaiseException:
-                    raise EOFError("Tried to read when end of input was reached")
-                elif _EOFMode is EOFModes.ReturnNone:
-                    return None
+        try:
+            # get next word if need be
+            if self.word is None:
+                self._init_next_word()
 
-        # return whatever
-        if typ == chr:
-            value = self.word[0]
-            self.wordidx += 1
-        else:
-            try:
+            # return whatever
+            if typ == chr:
+                value = self.word[0]
+                self.wordidx += 1
+            else:
                 value = typ(self.word)
                 self.word = None
-            except ValueError:
-                raise JutgeTokenizer.InputTypeError("Unable to parse '{}' as {}".format(self.word, typ))
-        return value
+            return value
+
+        except EOFError:
+            if _EOFMode is EOFModes.RaiseException:
+                raise EOFError("Tried to read when end of input was reached")
+            elif _EOFMode is EOFModes.ReturnNone:
+                return None
+        except ValueError:
+            raise JutgeTokenizer.InputTypeError("Unable to parse '{}' as {}".format(self.word, typ))
 
     def multiple_tokens(self, amount, type1=str, *types):
         """Return generator of type-heterogenous values"""
