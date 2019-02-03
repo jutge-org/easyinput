@@ -40,6 +40,7 @@ class JutgeTokenizer(object):
 
     @property
     def word(self):
+        """Gets current word"""
         if self._word is None or self.wordidx == self.wordlen:
             return None
         return self._word[self.wordidx:]
@@ -64,9 +65,8 @@ class JutgeTokenizer(object):
             self.__init_next_line()
             word = next(self.words_in_line)
         self.word = word
-        self.worditer = iter(self._word)
         self.wordidx = 0
-        self.wordlen = len(self.word)
+        self.wordlen = len(word)
 
     def nexttoken(self, typ=str):
         """Get next token as the specified type."""
