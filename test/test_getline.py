@@ -1,8 +1,22 @@
 import jutge
 
 
-def test_get_line():
-    with open('test/text/source4.txt') as source:
+def test_read_line():
+    with open('test/text/source2.txt') as source:
+        jutge.read_line(file=source)
         jutge.read(file=source)
-        line = jutge.get_line(file=source)
-    assert line == 'Thor 2010'
+        line = jutge.read_line(file=source, skip_empty=False)
+    assert line == '    \n'
+
+
+def test_read_many_lines():
+    with open('test/text/source2.txt') as source:
+        for _ in jutge.read_many_lines(file=source): pass
+        assert jutge.read_line(file=source) is None
+
+
+def test_skip_empty():
+    with open('test/text/source2.txt') as source:
+        for line in jutge.read_many_lines(file=source, skip_empty=False):
+            if line == '    \n': break
+        assert jutge.read_line(file=source) == '3.14 12\n'

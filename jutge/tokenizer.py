@@ -133,10 +133,38 @@ def read_many(*types, **kwargs):
         set_eof_handling(previous_eof_mode)
 
 
-@kwd_only(file=_StdIn)
-def get_line(**kwargs):
-    tokens, _, _ = __unpack_and_check(**kwargs)
-    return tokens.get_line()
+@kwd_only(file=_StdIn, skip_empty=True)
+def read_line(**kwargs):
+    """
+    Gets next line in input. If `skip_empty` is True, only lines with
+    at least one character other than '\n' are returned.
+    :return: str
+    """
+    tokenizer = _get_tokenizer(kwargs)
+    skip_empty = kwargs['skip_empty']
+    for line in tokenizer.stream:
+        if not skip_empty or len(line) > 1:
+            return line
+
+    if _EOFMode is EOFModes.ReturnNone:
+        return None
+    else:
+        raise EOFError("Tried to read when end of input was reached")
+
+
+@kwd_only(file=_StdIn, skip_empty=True)
+def read_many_lines(**kwargs):
+    """
+    Generates iterable sequence of the lines in the input (that haven't been read).
+    If `skip_empty` is True, only lines with at least one character other than '\n'
+    are yielded.
+    :return: str
+    """
+    tokenizer = _get_tokenizer(kwargs)
+    skip_empty = kwargs['skip_empty']
+    for line in tokenizer.stream:
+        if not skip_empty or len(line) > 1:
+            yield line
 
 
 def _get_tokenizer(kwargs):
@@ -162,7 +190,6 @@ def _select_method(tokens, types, amount, as_list):
     Intended for internal use. Helper function for `read` and `read_many`.
     Selects the specific method to be used based on type/token amount.
     """
-
     if len(types) <= 1 and amount <= 1:
         method, args, as_list = tokens.nexttoken, types, False
     else:
