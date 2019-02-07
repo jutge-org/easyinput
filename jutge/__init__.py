@@ -8,4 +8,8 @@ from jutge.tokenizer import *
 version = "2.0"  # current version
 
 # Specify what to import with *:
-__all__ = ['read', 'read_while', 'get_line', 'set_eof_handling', 'EOFModes']
+__all__ = [
+    'read', 'read_many',
+    'read_line', 'read_many_lines',
+    'set_eof_handling', 'EOFModes'
+]

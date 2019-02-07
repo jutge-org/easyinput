@@ -49,7 +49,7 @@ class JutgeTokenizer(object):
         self._word = self.words_in_line[self._wordidx]
         return self._word
 
-    def get_line(self):
+    def get_nonempty_line(self):
         """Returns next non-empty line in stream"""
         for line in self.stream:
             line = line.strip()
@@ -59,7 +59,7 @@ class JutgeTokenizer(object):
 
     def _init_next_line(self):
         """Initialize next line and associated variables"""
-        self.words_in_line = self.get_line().split()
+        self.words_in_line = self.get_nonempty_line().split()
         self._wordidx = 0
 
     def nexttoken(self, typ=str):
@@ -104,16 +104,16 @@ def read(*types, **kwargs):
     the types specified by *types.
     This is the main function in the module.
     """
-    tokens, amount, as_list = __unpack_and_check(**kwargs)
-    method, args = __select_method(tokens, types, amount, as_list)
+    tokens, amount, as_list = _get_tokenizer(kwargs), _get_amount(kwargs), kwargs['as_list']
+    method, args = _select_method(tokens, types, amount, as_list)
     return method(*args)
 
 
 @kwd_only(file=_StdIn, amount=1)  # Python 2 compatibility
-def read_while(*types, **kwargs):
+def read_many(*types, **kwargs):
     """
     Py3 signature:
-        `read_while(*types, file:iter=_StdIn, amount:int=1)`
+        `read_many(*types, file:iter=_StdIn, amount:int=1)`
     Generator that yields converted tokens while the
     stream is not empty and the tokens can be converted
     to the specified types.
@@ -121,8 +121,8 @@ def read_while(*types, **kwargs):
     previous_eof_mode = _EOFMode
     set_eof_handling(EOFModes.RaiseException)
     try:
-        tokens, amount, _ = __unpack_and_check(**kwargs)
-        method, args = __select_method(tokens, types, amount, True)
+        tokenizer, amount = _get_tokenizer(kwargs), _get_amount(kwargs)
+        method, args = _select_method(tokenizer, types, amount, True)
         while True:
             yield method(*args)
     except JutgeTokenizer.InputTypeError:
@@ -139,30 +139,27 @@ def get_line(**kwargs):
     return tokens.get_line()
 
 
-def __unpack_and_check(**kwargs):
-    """
-    Intended for internal use only. Helper function for `read` and `read_while`.
-    Gets relevant kwrags and does whatever type/value checking needs to be made.
-    """
-
-    file = kwargs.get('file', None)
-    amount = kwargs.get('amount', None)
-    as_list = kwargs.get('as_list', None)
-    if amount is not None:
-        if not isinstance(amount, int):
-            raise TypeError("Expected integer amount")
-        if not amount >= 0:
-            raise ValueError("Expected non-negative amount")
+def _get_tokenizer(kwargs):
+    """Helper function intended for internal use. Gets open tokenizer object."""
+    file = kwargs['file']
     if file not in _tokenizers:
         _tokenizers[file] = JutgeTokenizer(file)
-    tokens = _tokenizers[file]
-
-    return tokens, amount, as_list
+    return _tokenizers[file]
 
 
-def __select_method(tokens, types, amount, as_list):
+def _get_amount(kwargs):
+    """Helper function intended for internal use. Checks validity of `amount` kwarg."""
+    amount = kwargs['amount']
+    if not isinstance(amount, int):
+        raise TypeError("Expected integer amount")
+    if not amount >= 0:
+        raise ValueError("Expected non-negative amount")
+    return amount
+
+
+def _select_method(tokens, types, amount, as_list):
     """
-    Intended for internal use only. Helper function for `read` and `read_while`.
+    Intended for internal use. Helper function for `read` and `read_many`.
     Selects the specific method to be used based on type/token amount.
     """
 

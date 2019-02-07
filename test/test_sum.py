@@ -5,7 +5,7 @@ import jutge
 
 def sum_jutge(data):
     stream = io.StringIO(data)
-    return sum(jutge.read_while(int, file=stream))
+    return sum(jutge.read_many(int, file=stream))
 
 
 def sum_python(data):

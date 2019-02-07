@@ -5,7 +5,7 @@ import jutge
 
 def upper_jutge(data):
     stream = io.StringIO(data)
-    return "".join(x.upper() for x in jutge.read_while(file=stream))
+    return "".join(x.upper() for x in jutge.read_many(file=stream))
 
 
 def upper_python(data):

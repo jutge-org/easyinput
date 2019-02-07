@@ -18,5 +18,7 @@ def test_2():
         jutge.read(file=source)
     except EOFError:
         raised = True
+    finally:
+        jutge.set_eof_handling(jutge.EOFModes.ReturnNone)
 
     assert raised
