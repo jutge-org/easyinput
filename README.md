@@ -12,12 +12,9 @@ reading functions mimic `C++`'s `cin` input stream.
 1. [Installation](#installation)
 1. [Quickstart tutorial](#quickstart-tutorial)
 1. [Usage](#usage)
-    1. [`read`](#read)
-    2. [`read_many`](#read_many)
-    3. [`read_line`](#read_line)
-    3. [`read_many_lines`](#read_many_lines)
+    1. [Reading tokens](#reading-tokens)
+    1. [Reading lines](#reading-lines)
     3. [Multiple tokens](#multiple-tokens)
-    3. [Keyword arguments](#keyword-arguments)
     3. [Specifying the file stream](#specifying-the-file-stream)
     3. [Basic types](#basic-types)
     3. [User defined types](#user-defined-types)
@@ -146,7 +143,9 @@ jutge.read_line()
 ```
 
 
-## `read` 
+## Reading tokens
+
+### `read` 
 The `read` function returns the next token in the
 input. The type of the token must be given as a parameter: `read(int)`,
 `read(float)`, `read(str)`, `read(chr)`... Except for characters, tokens are 
@@ -199,7 +198,7 @@ print(read())
 
 ----
 
-## `read_many`
+### `read_many`
 
 `read_many` is a function that reads tokens as long as it can&mdash;
 i.e., while there still are tokens (of the requested type) to be read. 
@@ -323,8 +322,61 @@ print(sum(read_many(float)))
 
 **Output**: `70.753`
 
+### Keyword arguments
 
-## `read_line`
+#### `amount`
+
+Both `read` and `read_many` take the optional keyword-argument
+`amount`. It specifies the amount of times to "concatenate" the
+requested types. I.e., `read(int, amount=4)` is equivalent to
+`read(int, int, int, int)`.
+
+It is useful when you need to read a large (but fixed) number
+of tokens, as in `read(int, amount=1000)`.
+
+It is compatible with heterogeneous types. I.e., 
+`read(str, int, amount=2)` is equivalent to `read(str, int, str, int)`.
+
+#### `as_list`
+
+By default, when `read` is [called with multiple types](#multiple-tokens),
+it returns a `list` with the requested tokens. If, for some reason, you
+don't need implicit conversion to a `list`, `read` can return a
+generator instead. This is achieved by passing `as_list=False`, as in
+`read(float, amount=10000, as_list=False)`.
+
+This has the advantage of avoiding unnecessary iteration to create the
+list and copy the tokens into it. For example, you could use it to create
+a large `numpy` array: 
+
+```python
+import numpy as np
+from jutge import read
+
+arr = np.array(read(float, amount=1000000, as_list=False))
+```
+
+In the previous block of code, only one iteration through all of 
+the tokens takes place&mdash;the one to fill the `np.array`&mdash;
+whilst if `as_list` were set to
+`False`, two iterations would take place: one to fill the list, and
+another to fill the array.
+
+Keep in mind that the generator returned by `read` when `as_list` is
+set to `True` *does not consume any input until you iterate through it*.
+This is the reason for which `read_many` does **not** support this
+keyword argument: it *must* consume input in order to discern
+whether it should keep going or not, so it always returns 
+multiple-token queries as lists.
+
+#### `file`
+
+See [*Specifying the file stream*](#specifying-the-file-stream).
+
+
+## Reading lines
+
+### `read_line`
 
 This function takes no positional arguments. It returns the next
 line in the input stream. By default it skips any lines that
@@ -359,12 +411,20 @@ Hello world!
 ----
 
 
-## `read_many_lines`
+### `read_many_lines`
 
 The behaviour of this function with respect to `read_line` 
 is analogous to the behaviour of `read_many`
 with respect to `read`; it yields lines as long as
 there are more.
+
+### Keyword arguments
+
+#### `skip_empty`
+
+Both `read_line` and `read_many_lines` allow this keyword argument.
+When set to `True` (which it is by default), empty lines 
+(i.e. lines that only contain the newline character) are skipped.
 
 ## Multiple tokens
 
@@ -372,7 +432,7 @@ Both `read` and `read_many` support specifying more than one type,
 as in `read(int, chr)`. 
 
 In `read`'s case, this usage returns
-an iterable sequence&mdash;see [here](#as-list) for more details&mdash;of 
+an iterable sequence&mdash;see [here](#as_list) for more details&mdash;of 
 tokens, one for each type requested, respecting their order. 
 For example, `read(int, chr, int)` will return a
 sequence containing an `int`, a `chr`, and an `int`, *in that order*.
@@ -436,60 +496,11 @@ whilst the second, "manual", loop, will stop with a `ValueError`.
 > the types, but those tokens will be "consumed", since right now
 > there is no backtracking implemented.
 
-## Keyword arguments
 
-### `amount`
-
-Both `read` and `read_many` take the optional keyword-argument
-`amount`. It specifies the amount of times to "concatenate" the
-requested types. I.e., `read(int, amount=4)` is equivalent to
-`read(int, int, int, int)`.
-
-It is useful when you need to read a large (but fixed) number
-of tokens, as in `read(int, amount=1000)`.
-
-It is compatible with heterogeneous types. I.e., 
-`read(str, int, amount=2)` is equivalent to `read(str, int, str, int)`.
-
-### `as_list` <a name="as-list"></a>
-
-By default, when `read` is [called with multiple types](#multiple-tokens),
-it returns a `list` with the requested tokens. If, for some reason, you
-don't need implicit conversion to a `list`, `read` can return a
-generator instead. This is achieved by passing `as_list=False`, as in
-`read(float, amount=10000, as_list=False)`.
-
-This has the advantage of avoiding unnecessary iteration to create the
-list and copy the tokens into it. For example, you could use it to create
-a large `numpy` array: 
-
-```python
-import numpy as np
-from jutge import read
-
-arr = np.array(read(float, amount=1000000, as_list=False))
-```
-
-In the previous block of code, only one iteration through all of 
-the tokens takes place&mdash;the one to fill the `np.array`&mdash;
-whilst if `as_list` were set to
-`False`, two iterations would take place: one to fill the list, and
-another to fill the array.
-
-Keep in mind that the generator returned by `read` when `as_list` is
-set to `True` *does not consume any input until you iterate through it*.
-This is the reason for which `read_many` does **not** support this
-keyword argument: it *must* consume input in order to discern
-whether it should keep going or not, so it always returns 
-multiple-token queries as lists.
-
-### `file`
-
-See [*Specifying the file stream*](#specifying-the-file-stream).
 
 ## Specifying the file stream
 
-All three functions accept a `file` keyword argument that specifies 
+All four functions accept a `file` keyword argument that specifies 
 the file stream to read from, as a `file` object 
 or other `io` stream object. It defaults to the
 standard input stream (as defined by the `input()` built-in).
