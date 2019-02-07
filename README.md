@@ -10,10 +10,12 @@ beginners an easy interface to read data in
 reading functions mimic `C++`'s `cin` input stream.
 
 1. [Installation](#installation)
-1. [Basic usage](#basic-usage)
+1. [Quickstart tutorial](#quickstart-tutorial)
+1. [Usage](#usage)
     1. [`read`](#read)
-    2. [`read_while`](#read_while)
-    3. [`get_line`](#get_line)
+    2. [`read_many`](#read_many)
+    3. [`read_line`](#read_line)
+    3. [`read_many_lines`](#read_many_lines)
     3. [Multiple tokens](#multiple-tokens)
     3. [Keyword arguments](#keyword-arguments)
     3. [Specifying the file stream](#specifying-the-file-stream)
@@ -21,6 +23,7 @@ reading functions mimic `C++`'s `cin` input stream.
     3. [User defined types](#user-defined-types)
 1. [Full reference](#full-reference)
     1. [Interface](#interface)
+    2. [EOF handling modes](#eof-handling-modes)
     2. [Extra features](#extra-features)
     3. [Version](#version)
 1. [Credits](#credits)
@@ -38,16 +41,98 @@ reading functions mimic `C++`'s `cin` input stream.
     - Uninstall with `pip uninstall jutge`.
 
 
-# Basic usage
+# Quickstart tutorial
 
-There are three main functions available to the user: `read`, `read_while` and `get_line`. All three of them can be imported at once by using the "import all" syntax:
+> This is a short learn-by-example tutorial, and does not
+> include all the functionality the package offers. 
+> For complete details, refer either to 
+> the [_Usage_](#usage) section or to the [_Full reference_](#full-reference). 
+
+This package offers a `read` function that returns the next token in the
+input. The type of the token must be given as a parameter: `read(int)`,
+`read(float)`, `read(str)`, `read(chr)`... In the event no more tokens are available,
+`read` returns `None`. 
+
+Except for characters, tokens are separated by whitespace, so that `read(str)`
+returns the next word. Whitespace characters cannot be obtained.
+
+----
+
+Sample program to read two numbers and write their sum:
+
+```python
+from jutge import read
+
+x = read(int)
+y = read(int)
+print(x + y)
+```
+
+----
+
+The package also includes the function `read_many`,
+which reads tokens as long as there are more (of the
+requested type).
+
+----
+
+Sample program to compute the sum of a sequence of integers with `read_many`:
+
+```python
+from jutge import read_many
+
+print(sum(read_many(int)))
+```
+
+Equivalent to:
+
+```python
+from jutge import read_many
+
+s = 0
+for num in read_many(int):
+    s += num
+
+print(s)
+```
+
+----
+
+Supported built-in types are specified [here](#basic-types).
+
+Both `read` and `read_many` support specifying more than one type
+at once, 
+as in `read(int, chr)`. More details can be found 
+[here](#multiple-tokens).
+
+---
+
+Sample program to read a character `c` and a number `n` and
+print the character that comes `n` positions after `c` (in
+the ASCII alphabet):
+
+```python
+from jutge import read
+
+c, n = read(chr, int)
+print(chr(ord(c) + n))
+```
+
+---
+
+# Usage
+
+There are four main functions available to the user: 
+`read`, `read_many`,  `read_line`, and `read_many_lines`. 
+All three of them can be imported at once by using the 
+"import all" syntax:
 
 ```python
 from jutge import *
 
 read()
-read_while()
-get_line()
+read_many()
+read_line()
 ```
 
 Of course, you can also import the whole `jutge` namespace and 
@@ -56,8 +141,8 @@ prefix each function name with `jutge`:
 import jutge
 
 jutge.read()
-jutge.read_while()
-jutge.get_line()
+jutge.read_many()
+jutge.read_line()
 ```
 
 
@@ -114,9 +199,9 @@ print(read())
 
 ----
 
-## `read_while`
+## `read_many`
 
-`read_while` is a function that reads tokens as long as it can&mdash;
+`read_many` is a function that reads tokens as long as it can&mdash;
 i.e., while there still are tokens (of the requested type) to be read. 
 It has the same signature as `read`; it takes one ([or more](#multiple-tokens)) 
 types as arguments.
@@ -127,7 +212,7 @@ with a `for` loop; see the examples below.
 -----
 
 **Example** <br>
-The following script showcases the behaviour of `read_while`.
+The following script showcases the behaviour of `read_many`.
 The `for` loop iterates though all integers in the input
 (until it encounters something that isn't an integer,
 or there is nothing else to be read) and prints each of
@@ -137,9 +222,9 @@ Finally, a string is read, to show that the rest
 of the input is still available to be read.
 
 ```python
-from jutge import read_while, read
+from jutge import read_many, read
 
-for num in read_while(int):
+for num in read_many(int):
     print(num**2)
 
 print(read())  # Should print 'hello'
@@ -171,7 +256,7 @@ hello
 
 ----
 
-Since `read_while` returns a generator, it does not consume all
+Since `read_many` returns a generator, it does not consume all
 the input beforehand; rather, each token is fetched "on-demand"
 at each iteration. Thus, the loop can be exited at any time. 
 See the following example.
@@ -181,10 +266,10 @@ See the following example.
 **Example**
 
 ```python
-from jutge import read_while, read
+from jutge import read_many, read
 
 print("Try to guess my number!")
-for num in read_while(int):
+for num in read_many(int):
     if num == 42:
         print("Correct! You guessed it!")
         break
@@ -225,9 +310,9 @@ Correct! You guessed it!
 Get the sum of a sequence of integers in the input.
 
 ```python
-from jutge import read_while
+from jutge import read_many
 
-print(sum(num for num in read_while(float)))
+print(sum(read_many(float)))
 ```
 
 **Input**: 
@@ -239,21 +324,22 @@ print(sum(num for num in read_while(float)))
 **Output**: `70.753`
 
 
-## `get_line`
+## `read_line`
 
 This function takes no positional arguments. It returns the next
-non-empty line in the input stream, stripped (i.e., without
-leading and trailing whitespace characters).
+line in the input stream. By default it skips any lines that
+only contain the newline (`'\n'`) character (this can be
+modified with the `skip_empty` keyword argument).
 
 ----
 
 **Example**
 
 ```python
-from jutge import get_line, read
+from jutge import read, read_line
 
 print(read())
-print(get_line())
+print(read_line())
 ```
 
 **Input**
@@ -273,9 +359,16 @@ Hello world!
 ----
 
 
+## `read_many_lines`
+
+The behaviour of this function with respect to `read_line` 
+is analogous to the behaviour of `read_many`
+with respect to `read`; it yields lines as long as
+there are more.
+
 ## Multiple tokens
 
-Both `read` and `read_while` support specifying more than one type, 
+Both `read` and `read_many` support specifying more than one type, 
 as in `read(int, chr)`. 
 
 In `read`'s case, this usage returns
@@ -311,7 +404,7 @@ print(z*w)
 
 ----
 
-In this regard, `read_while` behaves exactly like before.
+In this regard, `read_many` behaves exactly like before.
 Each iteration through the generator yields
 the equivalent of what would be obtained by calling
 `read` with the same arguments.
@@ -319,22 +412,26 @@ the equivalent of what would be obtained by calling
 That is, the following two loops are (almost) equivalent.
 
 ```python
-for char, num in read_while(chr, int):
+from jutge import read_many
+
+for char, num in read_many(chr, int):
     pass  # Code goes here
 ```
 
-```pythonstub
+```python
+from jutge import read
+
 char, num = read(chr, int)
 while char is not None and num is not None:
     pass  # Code goes here
     char, num = read(chr, int)
 ```
 
-The only difference is that `read_while` will automatically
+The only difference is that `read_many` will automatically
 stop when subsequent input does not match the desired types,
 whilst the second, "manual", loop, will stop with a `ValueError`.
 
-> **Note**: be careful when using `read_while` with heterogeneous 
+> **Note**: be careful when using `read_many` with heterogeneous 
 > types. It *will* stop when it encounters input that don't match
 > the types, but those tokens will be "consumed", since right now
 > there is no backtracking implemented.
@@ -343,7 +440,7 @@ whilst the second, "manual", loop, will stop with a `ValueError`.
 
 ### `amount`
 
-Both `read` and `read_while` take the optional keyword-argument
+Both `read` and `read_many` take the optional keyword-argument
 `amount`. It specifies the amount of times to "concatenate" the
 requested types. I.e., `read(int, amount=4)` is equivalent to
 `read(int, int, int, int)`.
@@ -381,7 +478,7 @@ another to fill the array.
 
 Keep in mind that the generator returned by `read` when `as_list` is
 set to `True` *does not consume any input until you iterate through it*.
-This is the reason for which `read_while` does **not** support this
+This is the reason for which `read_many` does **not** support this
 keyword argument: it *must* consume input in order to discern
 whether it should keep going or not, so it always returns 
 multiple-token queries as lists.
@@ -403,10 +500,10 @@ standard input stream (as defined by the `input()` built-in).
 Read each number from an open file:
 
 ```python
-from jutge import read_while
+from jutge import read_many
 
 with open('file.txt') as f:
-    for num in read_while(int, file=f):
+    for num in read_many(int, file=f):
         print(num)
 ```
 
@@ -545,7 +642,7 @@ Returns tokens from the input stream specified by `file`.
     immediately consumed. Otherwise, a generator is
     returned (and no input is consumed).
 
-- *(function)* `jutge.read_while(*types, amount=1, file=_StdIn)` <br>
+- *(function)* `jutge.read_many(*types, amount=1, file=_StdIn)` <br>
 Returns a generator that yields tokens from the input stream
 as long as there are more tokens to be read of the requested type.
 Each `next` call to this generator yields the result of
@@ -555,14 +652,27 @@ Each `next` call to this generator yields the result of
     *Parameters:* refer to the documentation for 
     [`read`'s parameters](#read-params)
     
-- *(function)* `jutge.get_line(*, file=_StdIn)` <br>
-Returns tokens from the input stream specified by `file`.
-`_StdIn` is an alias for standard input. 
+- *(function)* `jutge.read_line(*, file=_StdIn, skip_empty=True)` <br>
+Returns the next line in the input stream specified by `file`.
+`_StdIn` is an alias for standard input. Lines are given 
+raw (without stripping).
     
-    *Parameters:*
+    *Parameters:* <a name="read-line-params"></a>
     - `file` <br>
     A file object or other iterable input stream object
     (e.g. `io.StringIO`) that specifies where to read input from.
+    
+    - `skip_empty: bool` <br>
+    If true, strictly empty lines (i.e. lines with just the newline
+    character) will be skipped.
+    
+    
+- *(function)* `jutge.read_many_lines(*, file=_StdIn, skip_empty=True)` <br>
+Yields lines from the input stream as long as there are more to
+be read. Returns a generator object when called.
+    
+    *Parameters:* refer to the documentation for
+    [`read_line`'s parameters](#read-line-params)
     
 - *(function)* `jutge.set_eof_handling(mode)` <a name="set-handling"></a>
 Sets the global end of input handling mode to `mode` (a member
@@ -591,9 +701,7 @@ See [_EOF handling modes_](EOF handling modes) for more information.
 
 
 
-## Extra features
-
-### EOF handling modes
+## EOF handling modes
 
 The behaviour of the package's functions when encountering EOF 
 (the end of input) can be customized with [`set_eof_handling`](#set-handling), by
@@ -616,7 +724,7 @@ is much more beneficial than gobbling up the error in silence
 and potentially passing on the error to some other unrelated
 part of your code.
 
-As a side matter, `read_while` always functions in `RaiseException` mode,
+As a side matter, `read_many` always functions in `RaiseException` mode,
 since it needs to catch the error to shut down properly. There is a way
 to avoid doing this, but it involves checking for `None` objects in the output 
 tokens, which is much more cumbersome.
@@ -635,6 +743,8 @@ set_eof_handling(EOFModes.RaiseException)
 ```
 
 ---
+
+## Extra features
 
 ### Recursion limit
 
