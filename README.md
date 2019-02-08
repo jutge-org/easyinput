@@ -666,7 +666,7 @@ a.say_word()
 
 ## Interface
 
-- *(function)* `jutge.read(*types, amount=1, file=_StdIn, as_list=True)` <br>
+- *(function)* **`jutge.read(*types, amount=1, file=_StdIn, as_list=True)`** <br>
 Returns tokens from the input stream specified by `file`.
 `_StdIn` is an alias for standard input. 
     
@@ -693,7 +693,7 @@ Returns tokens from the input stream specified by `file`.
     immediately consumed. Otherwise, a generator is
     returned (and no input is consumed).
 
-- *(function)* `jutge.read_many(*types, amount=1, file=_StdIn)` <br>
+- *(function)* **`jutge.read_many(*types, amount=1, file=_StdIn)`** <br>
 Returns a generator that yields tokens from the input stream
 as long as there are more tokens to be read of the requested type.
 Each `next` call to this generator yields the result of
@@ -703,7 +703,7 @@ Each `next` call to this generator yields the result of
     *Parameters:* refer to the documentation for 
     [`read`'s parameters](#read-params)
     
-- *(function)* `jutge.read_line(*, file=_StdIn, skip_empty=True)` <br>
+- *(function)* **`jutge.read_line(*, file=_StdIn, skip_empty=True)`** <br>
 Returns the next line in the input stream specified by `file`.
 `_StdIn` is an alias for standard input. Lines are given 
 raw (without stripping).
@@ -718,24 +718,23 @@ raw (without stripping).
     character) will be skipped.
     
     
-- *(function)* `jutge.read_many_lines(*, file=_StdIn, skip_empty=True)` <br>
+- *(function)* **`jutge.read_many_lines(*, file=_StdIn, skip_empty=True)`** <br>
 Yields lines from the input stream as long as there are more to
 be read. Returns a generator object when called.
     
     *Parameters:* refer to the documentation for
     [`read_line`'s parameters](#read-line-params)
     
-- *(function)* `jutge.set_eof_handling(mode)` <a name="set-handling"></a>
+- *(function)* **`jutge.set_eof_handling(mode)`** <a name="set-handling"></a> <br>
 Sets the global end of input handling mode to `mode` (a member
 of the [`jutge.EOFModes`](#EOFModes) enum). 
 See [_EOF handling modes_](EOF handling modes) for more information.
 
     _Parameters:_
-    
     - `mode: jutge.EOFModes` <br>
     Handling mode to set.
 
-- *(enum.Enum)* `jutge.EOFModes` <a name="EOFModes"></a>
+- *(enum.Enum)* **`jutge.EOFModes`** <a name="EOFModes"></a> <br>
 Enumeration class with the different EOF handling modes. 
 See [_EOF handling modes_](EOF handling modes) for more information.
     
