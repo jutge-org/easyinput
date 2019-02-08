@@ -26,6 +26,8 @@ reading functions mimic `C++`'s `cin` input stream.
 1. [Credits](#credits)
 1. [License](#license)
 
+<br>
+
 # Installation
 
 - Python3:
@@ -37,6 +39,8 @@ reading functions mimic `C++`'s `cin` input stream.
     - Upgrade to latest version with `pip install --upgrade jutge`.
     - Uninstall with `pip uninstall jutge`.
 
+
+<br>
 
 # Quickstart tutorial
 
@@ -117,6 +121,8 @@ print(chr(ord(c) + n))
 
 ---
 
+<br>
+
 # Usage
 
 There are four main functions available to the user: 
@@ -142,6 +148,8 @@ jutge.read_many()
 jutge.read_line()
 ```
 
+
+<br>
 
 ## Reading tokens
 
@@ -197,6 +205,8 @@ print(read())
 **Output**: `None`
 
 ----
+
+<br>
 
 ### `read_many`
 
@@ -322,6 +332,8 @@ print(sum(read_many(float)))
 
 **Output**: `70.753`
 
+<br>
+
 ### Keyword arguments
 
 #### `amount`
@@ -336,6 +348,8 @@ of tokens, as in `read(int, amount=1000)`.
 
 It is compatible with heterogeneous types. I.e., 
 `read(str, int, amount=2)` is equivalent to `read(str, int, str, int)`.
+
+<br>
 
 #### `as_list`
 
@@ -369,10 +383,14 @@ keyword argument: it *must* consume input in order to discern
 whether it should keep going or not, so it always returns 
 multiple-token queries as lists.
 
+<br>
+
 #### `file`
 
 See [*Specifying the file stream*](#specifying-the-file-stream).
 
+
+<br>
 
 ## Reading lines
 
@@ -382,6 +400,12 @@ This function takes no positional arguments. It returns the next
 line in the input stream. By default it skips any lines that
 only contain the newline (`'\n'`) character (this can be
 modified with the `skip_empty` keyword argument).
+
+> Note that in this case lines that only contain whitespace
+> (other than the trailing newline), such as `' \t  \n'`,
+> _will_ be considered "non-empty", and thus returned. If you
+> don't care about whitespace, you should maybe be looking at
+> reading individual tokens with [`read`](#read).
 
 ----
 
@@ -411,12 +435,16 @@ Hello world!
 ----
 
 
+<br>
+
 ### `read_many_lines`
 
 The behaviour of this function with respect to `read_line` 
 is analogous to the behaviour of `read_many`
 with respect to `read`; it yields lines as long as
 there are more.
+
+<br>
 
 ### Keyword arguments
 
@@ -425,6 +453,8 @@ there are more.
 Both `read_line` and `read_many_lines` allow this keyword argument.
 When set to `True` (which it is by default), empty lines 
 (i.e. lines that only contain the newline character) are skipped.
+
+<br>
 
 ## Multiple tokens
 
@@ -497,6 +527,8 @@ whilst the second, "manual", loop, will stop with a `ValueError`.
 > there is no backtracking implemented.
 
 
+
+<br>
 
 ## Specifying the file stream
 
@@ -571,6 +603,8 @@ print(x + y)
 > at the top of the module, or by writing string literals with
 > the 'u' prefix: `u"I'm a unicode string"`.
 
+<br>
+
 ### Reading from an interactive console session
 
 As of version `2.0`, the standard input stream has been made to 
@@ -581,6 +615,8 @@ Keep in mind that to signal end of input you will have to enter
 <kbd>control</kbd> + <kbd>d</kbd> on Linux and Mac or 
 <kbd>control</kbd> + <kbd>z</kbd> on Windows.
 
+<br>
+
 ## Basic types
 
 The `read` function supports the following basic built-in types:
@@ -590,6 +626,8 @@ The `read` function supports the following basic built-in types:
 - character (`chr`),
 - string (`str`).
 
+
+<br>
 
 ## User defined types
 
@@ -621,6 +659,8 @@ a.say_word()
 **Output**: `HELLO`
 
 ---
+
+<br>
 
 # Full reference
 
@@ -712,6 +752,8 @@ See [_EOF handling modes_](EOF handling modes) for more information.
 
 
 
+<br>
+
 ## EOF handling modes
 
 The behaviour of the package's functions when encountering EOF 
@@ -755,6 +797,8 @@ set_eof_handling(EOFModes.RaiseException)
 
 ---
 
+<br>
+
 ## Extra features
 
 ### Recursion limit
@@ -765,9 +809,13 @@ Python interpreter stack is increased (using
 problems in [Jutge.org](https://jutge.org). 
 
 
+<br>
+
 ## Version
 
 The variable `jutge.version` contains the version of the package.
+
+<br>
 
 # Credits
 
@@ -775,6 +823,8 @@ The variable `jutge.version` contains the version of the package.
 - Albert Lobo https://github.com/llop
 - Paolo Lammens https://github.com/plammens
 
+
+<br>
 
 # License
 
