@@ -57,8 +57,6 @@ input. The type of the token must be given as a parameter: `read(int)`,
 Except for characters, tokens are separated by whitespace, so that `read(str)`
 returns the next word. Whitespace characters cannot be obtained.
 
-----
-
 Sample program to read two numbers and write their sum:
 
 ```python
@@ -69,13 +67,11 @@ y = read(int)
 print(x + y)
 ```
 
-----
 
 The package also includes the function `read_many`,
 which reads tokens as long as there are more (of the
 requested type).
 
-----
 
 Sample program to compute the sum of a sequence of integers with `read_many`:
 
@@ -97,7 +93,6 @@ for num in read_many(int):
 print(s)
 ```
 
-----
 
 Supported built-in types are specified [here](#basic-types).
 
@@ -397,9 +392,9 @@ See [*Specifying the file stream*](#specifying-the-file-stream).
 ### `read_line`
 
 This function takes no positional arguments. It returns the next
-line in the input stream. By default it skips any lines that
-only contain the newline (`'\n'`) character (this can be
-modified with the `skip_empty` keyword argument).
+line in the input stream. By default, trailing newline characters
+(CR, LF, or CRLF) are stripped (see the `rstrip` keyword
+argument).
 
 > Note that in this case lines that only contain whitespace
 > (other than the trailing newline), such as `' \t  \n'`,
@@ -415,7 +410,9 @@ modified with the `skip_empty` keyword argument).
 from jutge import read, read_line
 
 print(read())
-print(read_line())
+line = read_line()
+print(line, end='')
+print(repr(line))
 ```
 
 **Input**
@@ -423,6 +420,7 @@ print(read_line())
 ```text
 Hi, I'm a line
 Hello world!
+foo
 ```
 
 **Output**
@@ -430,6 +428,7 @@ Hello world!
 ```text
 Hi,
 Hello world!
+'Hello world!\n'
 ```
 
 ----
@@ -448,11 +447,19 @@ there are more.
 
 ### Keyword arguments
 
+#### `rstrip`
+
+Both `read_line` and `read_many_lines` allow this keyword argument.
+When set to `True` (which it is by default), trailing newline
+characters are stripped by calling `.rstrip('\r\n')`.
+
 #### `skip_empty`
 
 Both `read_line` and `read_many_lines` allow this keyword argument.
-When set to `True` (which it is by default), empty lines 
-(i.e. lines that only contain the newline character) are skipped.
+When set to `True` (by default it is set to
+`False`, empty lines 
+(i.e. lines that only contain whitespace) are skipped,
+and returned lines are stripped.
 
 <br>
 
@@ -703,22 +710,32 @@ Each `next` call to this generator yields the result of
     *Parameters:* refer to the documentation for 
     [`read`'s parameters](#read-params)
     
-- *(function)* **`jutge.read_line(*, file=_StdIn, skip_empty=True)`** <br>
+- *(function)* **`jutge.read_line(*, file=_StdIn, rstrip=True, skip_empty=True)`** <br>
 Returns the next line in the input stream specified by `file`.
 `_StdIn` is an alias for standard input. Lines are given 
-raw (without stripping).
+raw (without stripping). By default, trailing newlines (CR, LF,
+or CRLF) are stripped (see the `rstrip` keyword argument).
     
     *Parameters:* <a name="read-line-params"></a>
     - `file` <br>
     A file object or other iterable input stream object
     (e.g. `io.StringIO`) that specifies where to read input from.
     
+    - `rstrip: bool` <br>
+    If set to `True`, trailing newline characters are stripped
+    by calling `.rstrip('\r\n')`. Note that if you intend to
+    strip the whole line anyways, this may cause overhead
+    since strings are immutable, and thus stripping or "modifying"
+    the string requires making a copy; that is, if you
+    intend to call `.strip()` on the result, set `rstrip` to
+    `False`.
+    
     - `skip_empty: bool` <br>
     If true, strictly empty lines (i.e. lines with just the newline
-    character) will be skipped.
+    character) will be skipped, and returned lines will be stripped.
     
     
-- *(function)* **`jutge.read_many_lines(*, file=_StdIn, skip_empty=True)`** <br>
+- *(function)* **`jutge.read_many_lines(*, file=_StdIn, rstrip=True, skip_empty=True)`** <br>
 Yields lines from the input stream as long as there are more to
 be read. Returns a generator object when called.
     

@@ -6,7 +6,16 @@ def test_read_line():
         jutge.read_line(file=source)
         jutge.read(file=source)
         line = jutge.read_line(file=source, skip_empty=False)
-    assert line == '    \n'
+    assert line == '    '
+
+
+def test_read_line_read():
+    with open('test/text/source2.txt') as source:
+        jutge.read_line(file=source)
+        result1 = jutge.read(int, file=source)
+        jutge.read_line(file=source)
+        result2 = jutge.read(float, file=source)
+    assert result1 == -3 and result2 == 3.14
 
 
 def test_read_many_lines():
@@ -17,6 +26,15 @@ def test_read_many_lines():
 
 def test_skip_empty():
     with open('test/text/source2.txt') as source:
-        for line in jutge.read_many_lines(file=source, skip_empty=False):
-            if line == '    \n': break
-        assert jutge.read_line(file=source) == '3.14 12\n'
+        flag = False
+        for line in jutge.read_many_lines(file=source, skip_empty=True):
+            if line == '    ': flag = True
+    assert not flag
+
+
+def test_rstrip():
+    with open('test/text/source2.txt') as source:
+        jutge.read_line(file=source)
+        jutge.read(file=source)
+        line = jutge.read_line(file=source, skip_empty=False, rstrip=False)
+    assert line == '    \n'

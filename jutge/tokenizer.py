@@ -23,6 +23,17 @@ def set_eof_handling(mode):
     _EOFMode = mode
 
 
+def _handle_eof():
+    """
+    Internal function called when EOF is encountered.
+    Behaves according to global EOF mode
+    """
+    if _EOFMode is EOFModes.RaiseException:
+        raise EOFError("Tried to read when end of input was reached")
+    elif _EOFMode is EOFModes.ReturnNone:
+        return None
+
+
 class JutgeTokenizer(object):
     """Iterator class for parsing and converting tokens
     from a stream."""
@@ -37,6 +48,7 @@ class JutgeTokenizer(object):
         self._wordidx = 0
         self._word = ''
         self._charidx = 0
+        self.reached_eof = False
 
     @property
     def word(self):
@@ -49,8 +61,14 @@ class JutgeTokenizer(object):
         self._word = self.words_in_line[self._wordidx]
         return self._word
 
+    def get_line(self):
+        self._wordidx = len(self.words_in_line)
+        for line in self.stream:
+            return line
+        raise EOFError
+
     def get_nonempty_line(self):
-        """Returns next non-empty line in stream"""
+        """Returns next non-empty stripped line in stream"""
         for line in self.stream:
             line = line.strip()
             if line:
@@ -64,6 +82,8 @@ class JutgeTokenizer(object):
 
     def nexttoken(self, typ=str):
         """Get next token as the specified type."""
+        if self.reached_eof:
+            return _handle_eof()  # shortcut when no more input is available
         try:
             # return whatever
             if typ == chr:
@@ -74,12 +94,9 @@ class JutgeTokenizer(object):
                 self._wordidx += 1
                 self._charidx = 0
             return value
-
         except EOFError:
-            if _EOFMode is EOFModes.RaiseException:
-                raise EOFError("Tried to read when end of input was reached")
-            elif _EOFMode is EOFModes.ReturnNone:
-                return None
+            self.reached_eof = True
+            return _handle_eof()
         except ValueError:
             raise JutgeTokenizer.InputTypeError("Unable to parse '{}' as {}".format(self.word, typ))
 
@@ -120,51 +137,56 @@ def read_many(*types, **kwargs):
     """
     previous_eof_mode = _EOFMode
     set_eof_handling(EOFModes.RaiseException)
+    tokenizer, amount = _get_tokenizer(kwargs), _get_amount(kwargs)
+    method, args = _select_method(tokenizer, types, amount, True)
+
     try:
-        tokenizer, amount = _get_tokenizer(kwargs), _get_amount(kwargs)
-        method, args = _select_method(tokenizer, types, amount, True)
         while True:
             yield method(*args)
-    except JutgeTokenizer.InputTypeError:
-        return
-    except EOFError:
+    except (JutgeTokenizer.InputTypeError, EOFError):
         return
     finally:
         set_eof_handling(previous_eof_mode)
 
 
-@kwd_only(file=_StdIn, skip_empty=True)
+@kwd_only(file=_StdIn, rstrip=True, skip_empty=False)
 def read_line(**kwargs):
     """
     Gets next line in input. If `skip_empty` is True, only lines with
-    at least one character other than '\n' are returned.
+    at least one non-whitespace character are returned.
     :return: str
     """
     tokenizer = _get_tokenizer(kwargs)
-    skip_empty = kwargs['skip_empty']
-    for line in tokenizer.stream:
-        if not skip_empty or len(line) > 1:
-            return line
+    skip_empty, rstrip = kwargs['skip_empty'], kwargs['rstrip']
+    try:
+        if skip_empty:
+            return tokenizer.get_nonempty_line()
+        line = tokenizer.get_line()
+        return line.rstrip('\r\n') if rstrip else line
+    except EOFError:
+        return _handle_eof()
 
-    if _EOFMode is EOFModes.ReturnNone:
-        return None
-    else:
-        raise EOFError("Tried to read when end of input was reached")
 
-
-@kwd_only(file=_StdIn, skip_empty=True)
+@kwd_only(file=_StdIn, rstrip=True, skip_empty=False)
 def read_many_lines(**kwargs):
     """
     Generates iterable sequence of the lines in the input (that haven't been read).
-    If `skip_empty` is True, only lines with at least one character other than '\n'
+    If `skip_empty` is True, only lines with at least one non-whitespace character
     are yielded.
     :return: str
     """
     tokenizer = _get_tokenizer(kwargs)
-    skip_empty = kwargs['skip_empty']
-    for line in tokenizer.stream:
-        if not skip_empty or len(line) > 1:
-            yield line
+    skip_empty, rstrip = kwargs['skip_empty'], kwargs['rstrip']
+    try:
+        if skip_empty:
+            while True:
+                yield tokenizer.get_nonempty_line()
+        else:
+            while True:
+                line = tokenizer.get_line()
+                yield line.rstrip('\r\n') if rstrip else line
+    except EOFError:
+        return
 
 
 def _get_tokenizer(kwargs):
