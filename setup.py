@@ -44,6 +44,7 @@ setup(
 # git push
 # git tag 1.12345 -m "Release 1.12345"
 # git push --tags origin master
+# python3 setup.py sdist bdist_wheel
 # python3 -m twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
 #
 # More docs:
