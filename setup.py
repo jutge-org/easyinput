@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = "2.0"
+version = "2.1"
 
 
 setup(
@@ -8,9 +8,9 @@ setup(
     packages=['jutge'],
     install_requires=['future>=0.17', 'enum34'],
     version=version,
-    description='Simple interface to read input from files, stdin, and other streams',
-
-    author='Jordi Petit',
+    description='Simple functions to read input from Python',
+    long_description='Simple functions to read input from Python',
+    author='Jordi Petit et al',
     author_email='jpetit@cs.upc.edu',
     url='https://github.com/jutge-org/jutge-python',
     download_url='https://github.com/jutge-org/jutge-python/tarball/{}'.format(version),
@@ -45,6 +45,11 @@ setup(
 # git push
 # git tag 1.12345 -m "Release 1.12345"
 # git push --tags origin master
-# python setup.py sdist upload
+# python3 setup.py sdist bdist_wheel
+# python3 -m twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
 #
-# More doc: http://peterdowns.com/posts/first-time-with-pypi.html
+# More docs:
+# http://peterdowns.com/posts/first-time-with-pypi.html
+# https://medium.com/@joel.barmettler/how-to-upload-your-python-package-to-pypi-65edc5fe9c56
+
+
