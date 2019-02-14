@@ -5,7 +5,7 @@ see https://github.com/jutge-org/jutge-python
 
 from jutge.tokenizer import *
 
-version = "2.0"  # current version
+version = "2.1"  # current version
 
 # Specify what to import with *:
 __all__ = [
