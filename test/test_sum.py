@@ -1,15 +1,11 @@
+from __future__ import unicode_literals
 import io
 import jutge
 
 
 def sum_jutge(data):
     stream = io.StringIO(data)
-    s = 0
-    x = jutge.read(int, file=stream)
-    while x is not None:
-        s += x
-        x = jutge.read(int, file=stream)
-    return s
+    return sum(jutge.read_many(int, file=stream))
 
 
 def sum_python(data):

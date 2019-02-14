@@ -5,4 +5,10 @@ dist/
 *~
 .coverage
 htmlcov/
-*,cover
+*.cover
+.idea/
+.pytest_cache/
+/test/text/long.txt
+/test/timing/
+/build/
+/jutge.egg-info/

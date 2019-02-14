@@ -1,19 +1,16 @@
 export PYTHONPATH=${CURDIR}
 
-.PHONY: all test coverage flake8 clean
+.PHONY: all coverage flake8 clean
 
-all: test coverage flake8
-
-test:
-	py.test
+all: coverage flake8
 
 coverage:
 	coverage run --source jutge -m py.test
 	coverage report
 
-# we ignore the "E501 line too long" diagnostics
+# we ignore the "E501 line too long" and "F403 'import *'" diagnostics
 flake8:
-	flake8 --ignore=E501 .
+	flake8 --ignore=E501,F403,F405 jutge/
 
 clean:
 	rm -rf .cache MANIFEST dist .coverage htmlcov */*,cover */__pycache__ *~ */*~ */*.pyc

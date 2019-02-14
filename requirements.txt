@@ -1,4 +1,5 @@
-pytest
+pytest <=4.9
 coverage
 coveralls
 flake8
+future
