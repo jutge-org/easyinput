@@ -1,19 +1,19 @@
 from setuptools import setup
 
-import jutge
+version = "2.0"
 
 
 setup(
     name='jutge',
     packages=['jutge'],
-    install_requires=['future >=0.17'],
-    version=jutge.version,
+    install_requires=['future>=0.17', 'enum34'],
+    version=version,
     description='Simple interface to read input from files, stdin, and other streams',
 
     author='Jordi Petit',
     author_email='jpetit@cs.upc.edu',
     url='https://github.com/jutge-org/jutge-python',
-    download_url='https://github.com/jutge-org/jutge-python/tarball/{}'.format(jutge.version),
+    download_url='https://github.com/jutge-org/jutge-python/tarball/{}'.format(version),
     keywords=['jutge', 'jutge.org', 'education', 'input'],
     license='Apache',
     classifiers=[

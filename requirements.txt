@@ -3,3 +3,4 @@ coverage
 coveralls
 flake8
 future
+enum34
