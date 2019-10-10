@@ -38,6 +38,8 @@ reading functions mimic `C++`'s `cin` input stream.
     - Install with `pip install jutge`.
     - Upgrade to latest version with `pip install --upgrade jutge`.
     - Uninstall with `pip uninstall jutge`.
+- If you are using Anaconda:
+    - Install with `python3 -m pip install jutge`.
 
 
 <br>
