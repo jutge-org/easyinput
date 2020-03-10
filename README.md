@@ -1,5 +1,4 @@
-# The `jutge` package 
-[![Build Status](https://travis-ci.org/jutge-org/jutge-python.svg?branch=master)](https://travis-ci.org/jutge-org/jutge-python) [![Coverage Status](https://coveralls.io/repos/github/jutge-org/jutge-python/badge.svg?branch=master)](https://coveralls.io/github/jutge-org/jutge-python?branch=master) [![Python Versions](https://img.shields.io/pypi/v/jutge.svg)](https://pypi.python.org/pypi/jutge) [![PyPi Version](https://img.shields.io/pypi/pyversions/jutge.svg)](https://pypi.python.org/pypi/jutge)
+# The `jutge` package
 
 ![Logo](logo.png)
 
