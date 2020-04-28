@@ -5,7 +5,7 @@ version = "2.1"
 
 setup(
     name='jutge',
-    packages=['jutge'],
+    packages=['jutge', 'jutge.reader'],
     install_requires=['future>=0.17', 'enum34'],
     version=version,
     description='Simple functions to read input from Python',

@@ -3,9 +3,9 @@ jutge package for alternative input handling.
 see https://github.com/jutge-org/jutge-python
 """
 
-from jutge.tokenizer import *
+from jutge.reader.tokenizer import *
 
-version = "2.1"  # current version
+version = "2.2"  # current version
 
 # Specify what to import with *:
 __all__ = [

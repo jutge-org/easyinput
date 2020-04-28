@@ -3,7 +3,7 @@ import sys
 
 from future.builtins import int  # for Python2 compatibility
 
-from jutge.utils import kwd_only, StdIn
+from jutge.reader.utils import kwd_only, StdIn
 
 
 class EOFModes(enum.Enum):
