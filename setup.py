@@ -12,8 +12,8 @@ setup(
     long_description='Easy functions to read input from Python',
     author='Jordi Petit et al',
     author_email='jpetit@cs.upc.edu',
-    url='https://github.com/jutge-org/easy-input',
-    download_url='https://github.com/jutge-org/easy-input/tarball/{}'.format(version),
+    url='https://github.com/jutge-org/easyinput',
+    download_url='https://github.com/jutge-org/easyinput/tarball/{}'.format(version),
     keywords=['easyinput', 'education', 'input'],
     license='Apache',
     classifiers=[

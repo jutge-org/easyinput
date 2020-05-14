@@ -1,6 +1,6 @@
 """
 easyinput package
-https://github.com/jutge-org/easy-input
+https://github.com/jutge-org/easyinput
 """
 
 from easyinput.tokenizer import *
