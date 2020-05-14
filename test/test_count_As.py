@@ -1,11 +1,11 @@
 from __future__ import unicode_literals
 import io
-import jutge
+import easyinput
 
 
 def count_As(data):
     stream = io.StringIO(data)
-    return sum(x == 'a' for x in (jutge.read_many(chr, file=stream)))
+    return sum(x == 'a' for x in (easyinput.read_many(chr, file=stream)))
 
 
 def test_1():

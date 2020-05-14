@@ -1,4 +1,4 @@
-from jutge import read
+from easyinput import read
 
 
 def test_bad_kwarg():

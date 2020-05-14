@@ -1,4 +1,4 @@
-from jutge import *
+from easyinput import *
 
 
 def test_all():

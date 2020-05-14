@@ -1,20 +1,20 @@
 from setuptools import setup
 
-version = "2.1"
+version = "2.3"
 
 
 setup(
-    name='jutge',
-    packages=['jutge', 'jutge.reader'],
+    name='easyinput',
+    packages=['easyinput'],
     install_requires=['future>=0.17', 'enum34'],
     version=version,
-    description='Simple functions to read input from Python',
-    long_description='Simple functions to read input from Python',
+    description='Easy functions to read input from Python',
+    long_description='Easy functions to read input from Python',
     author='Jordi Petit et al',
     author_email='jpetit@cs.upc.edu',
-    url='https://github.com/jutge-org/jutge-python',
-    download_url='https://github.com/jutge-org/jutge-python/tarball/{}'.format(version),
-    keywords=['jutge', 'jutge.org', 'education', 'input'],
+    url='https://github.com/jutge-org/easy-input',
+    download_url='https://github.com/jutge-org/easy-input/tarball/{}'.format(version),
+    keywords=['easyinput', 'education', 'input'],
     license='Apache',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -28,7 +28,9 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Topic :: Education',
     ],
 
@@ -40,7 +42,7 @@ setup(
 
 # Steps to distribute new version:
 #
-# Increment version in jutge/__init__py
+# Set new version in easyinput/__init__py and setup.py
 # git commit -a
 # git push
 # git tag 1.12345 -m "Release 1.12345"

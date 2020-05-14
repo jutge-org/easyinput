@@ -1,11 +1,11 @@
 from __future__ import unicode_literals
 import io
-import jutge
+import easyinput
 
 
 def check(data, a, b):
     stream = io.StringIO(data)
-    x, y = jutge.read(float, float, file=stream)
+    x, y = easyinput.read(float, float, file=stream)
     assert x == a
     assert y == b
 

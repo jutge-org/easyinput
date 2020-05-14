@@ -1,12 +1,11 @@
-# The `jutge` package
+# The `easyinput` package
 
-![Logo](logo.png)
-
-This tiny package offers a simple interface to read input from
-stdin, files, and other `io` streams. It was built in order to offer
-beginners an easy interface to read data in
-[Jutge.org](https://www.jutge.org) problems. The behaviour of the
+This tiny package offers an easy interface to read input from
+stdin, files, and other `io` streams.  The behaviour of the
 reading functions mimic `C++`'s `cin` input stream.
+It was originally built in order to offer
+beginners an easy interface to read data in
+[Jutge.org](https://www.jutge.org) problems.
 
 1. [Installation](#installation)
 1. [Quickstart tutorial](#quickstart-tutorial)
@@ -30,15 +29,15 @@ reading functions mimic `C++`'s `cin` input stream.
 # Installation
 
 - Python3:
-    - Install with `pip3 install jutge`.
-    - Upgrade to latest version with `pip3 install --upgrade jutge`.
-    - Uninstall with `pip3 uninstall jutge`.
+    - Install with `pip3 install easyinput`.
+    - Upgrade to latest version with `pip3 install --upgrade easyinput`.
+    - Uninstall with `pip3 uninstall easyinput`.
 - Python:
-    - Install with `pip install jutge`.
-    - Upgrade to latest version with `pip install --upgrade jutge`.
-    - Uninstall with `pip uninstall jutge`.
+    - Install with `pip install easyinput`.
+    - Upgrade to latest version with `pip install --upgrade easyinput`.
+    - Uninstall with `pip uninstall easyinput`.
 - If you are using Anaconda:
-    - Install with `python3 -m pip install jutge`.
+    - Install with `python3 -m pip install easyinput`.
 
 
 <br>
@@ -61,7 +60,7 @@ returns the next word. Whitespace characters cannot be obtained.
 Sample program to read two numbers and write their sum:
 
 ```python
-from jutge import read
+from easyinput import read
 
 x = read(int)
 y = read(int)
@@ -77,7 +76,7 @@ requested type).
 Sample program to compute the sum of a sequence of integers with `read_many`:
 
 ```python
-from jutge import read_many
+from easyinput import read_many
 
 print(sum(read_many(int)))
 ```
@@ -85,7 +84,7 @@ print(sum(read_many(int)))
 Equivalent to:
 
 ```python
-from jutge import read_many
+from easyinput import read_many
 
 s = 0
 for num in read_many(int):
@@ -109,7 +108,7 @@ print the character that comes `n` positions after `c` (in
 the ASCII alphabet):
 
 ```python
-from jutge import read
+from easyinput import read
 
 c, n = read(chr, int)
 print(chr(ord(c) + n))
@@ -127,21 +126,31 @@ All three of them can be imported at once by using the
 "import all" syntax:
 
 ```python
-from jutge import *
+from easyinput import *
 
 read()
 read_many()
 read_line()
 ```
 
-Of course, you can also import the whole `jutge` namespace and 
-prefix each function name with `jutge`:
+Of course, you can also import the whole `easyinput` namespace and 
+prefix each function name with `easyinput`:
 ```python
-import jutge
+import easyinput
 
-jutge.read()
-jutge.read_many()
-jutge.read_line()
+easyinput.read()
+easyinput.read_many()
+easyinput.read_line()
+```
+
+And you can also import `easyinput` with an alternative name:
+
+```python
+import easyinput as easy
+
+easy.read()
+easy.read_many()
+easy.read_line()
 ```
 
 
@@ -164,7 +173,7 @@ If no type is specified&mdash;i.e., calling `read()`&mdash;it defaults to `str`.
 Sample program to read two numbers and write their maximum:
 
 ```python
-from jutge import read
+from easyinput import read
 
 x = read(int)
 y = read(int)
@@ -190,7 +199,7 @@ In the event no more tokens are available,
 **Example**
 
 ```python
-from jutge import read
+from easyinput import read
 
 print(read())
 print(read())
@@ -227,7 +236,7 @@ Finally, a string is read, to show that the rest
 of the input is still available to be read.
 
 ```python
-from jutge import read_many, read
+from easyinput import read_many, read
 
 for num in read_many(int):
     print(num**2)
@@ -271,7 +280,7 @@ See the following example.
 **Example**
 
 ```python
-from jutge import read_many, read
+from easyinput import read_many, read
 
 print("Try to guess my number!")
 for num in read_many(int):
@@ -315,7 +324,7 @@ Correct! You guessed it!
 Get the sum of a sequence of integers in the input.
 
 ```python
-from jutge import read_many
+from easyinput import read_many
 
 print(sum(read_many(float)))
 ```
@@ -361,7 +370,7 @@ a large `numpy` array:
 
 ```python
 import numpy as np
-from jutge import read
+from easyinput import read
 
 arr = np.array(read(float, amount=1000000, as_list=False))
 ```
@@ -408,7 +417,7 @@ argument).
 **Example**
 
 ```python
-from jutge import read, read_line
+from easyinput import read, read_line
 
 print(read())
 line = read_line()
@@ -481,7 +490,7 @@ sequence containing an `int`, a `chr`, and an `int`, *in that order*.
 Reading more than one token at once:
 
 ```python
-from jutge import read
+from easyinput import read
 
 x, y = read(chr, int)
 print(repr(x), type(x))
@@ -510,14 +519,14 @@ the equivalent of what would be obtained by calling
 That is, the following two loops are (almost) equivalent.
 
 ```python
-from jutge import read_many
+from easyinput import read_many
 
 for char, num in read_many(chr, int):
     pass  # Code goes here
 ```
 
 ```python
-from jutge import read
+from easyinput import read
 
 char, num = read(chr, int)
 while char is not None and num is not None:
@@ -551,7 +560,7 @@ standard input stream (as defined by the `input()` built-in).
 Read each number from an open file:
 
 ```python
-from jutge import read_many
+from easyinput import read_many
 
 with open('file.txt') as f:
     for num in read_many(int, file=f):
@@ -591,7 +600,7 @@ streams, as the following example shows.
 
 ```python
 import io
-from jutge import read
+from easyinput import read
 
 string = "21 40\t"
 stream = io.StringIO(string)
@@ -649,7 +658,7 @@ Read an instance of a custom class whose constructor accepts a string,
 and saves an uppercase copy of the string:
 
 ```python
-from jutge import read
+from easyinput import read
 
 class MyType:
     def __init__(self, word): 
@@ -674,7 +683,7 @@ a.say_word()
 
 ## Interface
 
-- *(function)* **`jutge.read(*types, amount=1, file=_StdIn, as_list=True)`** <br>
+- *(function)* **`easyinput.read(*types, amount=1, file=_StdIn, as_list=True)`** <br>
 Returns tokens from the input stream specified by `file`.
 `_StdIn` is an alias for standard input. 
     
@@ -701,7 +710,7 @@ Returns tokens from the input stream specified by `file`.
     immediately consumed. Otherwise, a generator is
     returned (and no input is consumed).
 
-- *(function)* **`jutge.read_many(*types, amount=1, file=_StdIn)`** <br>
+- *(function)* **`easyinput.read_many(*types, amount=1, file=_StdIn)`** <br>
 Returns a generator that yields tokens from the input stream
 as long as there are more tokens to be read of the requested type.
 Each `next` call to this generator yields the result of
@@ -711,7 +720,7 @@ Each `next` call to this generator yields the result of
     *Parameters:* refer to the documentation for 
     [`read`'s parameters](#read-params)
     
-- *(function)* **`jutge.read_line(*, file=_StdIn, rstrip=True, skip_empty=True)`** <br>
+- *(function)* **`easyinput.read_line(*, file=_StdIn, rstrip=True, skip_empty=True)`** <br>
 Returns the next line in the input stream specified by `file`.
 `_StdIn` is an alias for standard input. Lines are given 
 raw (without stripping). By default, trailing newlines (CR, LF,
@@ -736,23 +745,23 @@ or CRLF) are stripped (see the `rstrip` keyword argument).
     character) will be skipped, and returned lines will be stripped.
     
     
-- *(function)* **`jutge.read_many_lines(*, file=_StdIn, rstrip=True, skip_empty=True)`** <br>
+- *(function)* **`easyinput.read_many_lines(*, file=_StdIn, rstrip=True, skip_empty=True)`** <br>
 Yields lines from the input stream as long as there are more to
 be read. Returns a generator object when called.
     
     *Parameters:* refer to the documentation for
     [`read_line`'s parameters](#read-line-params)
     
-- *(function)* **`jutge.set_eof_handling(mode)`** <a name="set-handling"></a> <br>
+- *(function)* **`easyinput.set_eof_handling(mode)`** <a name="set-handling"></a> <br>
 Sets the global end of input handling mode to `mode` (a member
-of the [`jutge.EOFModes`](#EOFModes) enum). 
+of the [`easyinput.EOFModes`](#EOFModes) enum). 
 See [_EOF handling modes_](EOF handling modes) for more information.
 
     _Parameters:_
-    - `mode: jutge.EOFModes` <br>
+    - `mode: easyinput.EOFModes` <br>
     Handling mode to set.
 
-- *(enum.Enum)* **`jutge.EOFModes`** <a name="EOFModes"></a> <br>
+- *(enum.Enum)* **`easyinput.EOFModes`** <a name="EOFModes"></a> <br>
 Enumeration class with the different EOF handling modes. 
 See [_EOF handling modes_](EOF handling modes) for more information.
     
@@ -807,7 +816,7 @@ For backwards compatibility reasons, `ReturnNone` is the default.
 Changing the EOF mode to `RaiseException`:
 
 ```python
-from jutge import *
+from easyinput import *
 
 set_eof_handling(EOFModes.RaiseException)
 ```
@@ -820,7 +829,7 @@ set_eof_handling(EOFModes.RaiseException)
 
 ### Recursion limit
 
-When importing the `jutge` package, the maximum depth of the
+When importing the `easyinput` package, the maximum depth of the
 Python interpreter stack is increased (using
 `sys.setrecursionlimit(1000000)`). This feature helps solving some recursive
 problems in [Jutge.org](https://jutge.org). 
@@ -830,7 +839,7 @@ problems in [Jutge.org](https://jutge.org).
 
 ## Version
 
-The variable `jutge.version` contains the version of the package.
+The variable `easyinput.version` contains the version of the package.
 
 <br>
 
@@ -845,4 +854,5 @@ The variable `jutge.version` contains the version of the package.
 
 # License
 
-[Apache License 2.0](https://raw.githubusercontent.com/jutge-org/jutge-python/master/LICENSE.txt)
+Apache License 2.0
+

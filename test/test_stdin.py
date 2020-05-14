@@ -1,18 +1,18 @@
 from __future__ import unicode_literals
 import sys
 import io
-import jutge
+import easyinput
 
 
 class Test:
     def test_function(self):
         sys.stdin = io.StringIO("10 20 30")
-        [x, y, z] = jutge.read(int, int, int, file=sys.stdin)
+        [x, y, z] = easyinput.read(int, int, int, file=sys.stdin)
         assert [x, y, z] == [10, 20, 30]
 
     def test_2(self):
         sys.stdin = io.StringIO("a line\n next line")
-        gen = jutge.StdIn()
+        gen = easyinput.StdIn()
         assert next(gen) == "a line"
 
     def setup_method(self, method):

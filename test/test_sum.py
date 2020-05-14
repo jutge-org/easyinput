@@ -1,11 +1,11 @@
 from __future__ import unicode_literals
 import io
-import jutge
+import easyinput
 
 
-def sum_jutge(data):
+def sum_easyinput(data):
     stream = io.StringIO(data)
-    return sum(jutge.read_many(int, file=stream))
+    return sum(easyinput.read_many(int, file=stream))
 
 
 def sum_python(data):
@@ -13,7 +13,7 @@ def sum_python(data):
 
 
 def check(data):
-    assert sum_jutge(data) == sum_python(data)
+    assert sum_easyinput(data) == sum_python(data)
 
 
 def test_1():
